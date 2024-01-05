@@ -1,5 +1,5 @@
 abstract class Drawables {
-  String baseSvg = "assets/images/svg/";
+  String baseSvg = "assets/svgs/";
   String basePng = "assets/images/";
 
   String get logoSmall;

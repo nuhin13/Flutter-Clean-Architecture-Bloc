@@ -55,6 +55,14 @@ dependencies:
 
   flutter_dotenv: ^5.1.0
   url_launcher: ^6.2.2
+  intl: ^0.19.0
+  logger: ^2.0.2+1
+
+  firebase_core: ^2.24.2
+  firebase_messaging: ^14.7.10
+  flutter_local_notifications: ^16.3.0
+
+  package_info_plus: ^5.0.1
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +91,7 @@ flutter:
   assets:
     - assets/images/
     - assets/svgs/
+    - .env
   # To add assets to your application, add an assets section, like this:
 
 

@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import 'app/app.dart';
 import 'features/welcome/presentation/splash/presentation/screen/splash_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
+  bootstrap(() => const AppRepositoryProvider());
 }
 
 class MyApp extends StatelessWidget {
