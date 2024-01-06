@@ -5,6 +5,8 @@ abstract class Drawables {
   String get logoSmall;
   String get splashImage;
 
+  String get loginDiziCash;
+
   String get welcomeBackground;
   String get welcomeBackgroundSVG;
   String get save;

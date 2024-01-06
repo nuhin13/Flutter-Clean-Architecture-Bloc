@@ -4,6 +4,7 @@ class AppDrawable extends Drawables {
   @override
   String get logoSmall => "${basePng}logo_small.png";
 
+
   @override
   String get splashImage => "${baseSvg}dizi_splash.svg";
 
@@ -36,4 +37,7 @@ class AppDrawable extends Drawables {
 
   @override
   String get errorIcon => "${basePng}error_icon.png";
+
+  @override
+  String get loginDiziCash => "${baseSvg}dizi_cash.svg";
 }
