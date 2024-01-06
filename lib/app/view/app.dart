@@ -7,6 +7,7 @@ import '../../features/authentication/domain/repository/auth_repository.dart';
 import '../../features/authentication/presentation/login/bloc/login_bloc_cubit.dart';
 import '../../features/authentication/presentation/login/screens/login_screen.dart';
 import '../../features/authentication/presentation/registration/bloc/registration_bloc.dart';
+import '../../features/trades/presentation/screens/trades_screen.dart';
 import '../../features/welcome/data/repo_impl/welcome_repository_impl.dart';
 import '../../features/welcome/domain/repository/welcome_repository.dart';
 import '../../features/welcome/presentation/splash/presentation/bloc/splash_bloc.dart';
@@ -56,7 +57,7 @@ class AppBlocProvider extends StatelessWidget {
         theme: ThemeData(
           appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
         ),
-        home: LoginScreen(),
+        home: TradesScreen(),
       ),
     );
   }
