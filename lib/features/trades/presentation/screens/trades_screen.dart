@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/res/app_context_extension.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_clean_architecture/features/trades/domain/trade_item.dart';
+
+import '../widget/build_trade_item.dart';
 
 class TradesScreen extends StatelessWidget {
   const TradesScreen({super.key});
@@ -15,22 +16,30 @@ class TradesScreen extends StatelessWidget {
     );
   }
 
-
-  // widget that populate 10 items in list view
   Widget _listView() {
+    List<TradeItem> tradeItems = generateTradeItems();
     return ListView.builder(
-      itemCount: 10,
+      itemCount: tradeItems.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Column(
-            children: [
-              Text('Item $index'),
-              const SizedBox(height: 10,)
-            ],
-          ),
+        return Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+          child: buildItem(tradeItems[index]),
         );
       },
     );
   }
 
+  List<TradeItem> generateTradeItems() {
+    List<TradeItem> tradeItems = List.generate(
+      10,
+      (index) => TradeItem()
+        ..name = 'Bugi'
+        ..contactPerson = 'Nuhin'
+        ..address = 'This is $index'
+        ..email = 'n@h.com'
+        ..phone = '0192932834',
+    );
+    return tradeItems;
+  }
 }
+
