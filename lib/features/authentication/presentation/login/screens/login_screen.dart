@@ -1,21 +1,47 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/res/app_context_extension.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../bloc/login_bloc_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final loginBlocCubit = BlocProvider.of<LoginBlocCubit>(context);
+
+
     return SafeArea(
       child: Scaffold(
-        body: main(context),
+        body: BlocConsumer<LoginBlocCubit, LoginBlocState>(
+          listener: (context, state) {
+            if (state is LoginSuccess) {
+              // Navigate to a new screen
+            }
+          },
+          builder: (context, state) {
+            if (state is LoginLoading) {
+              return const CircularProgressIndicator();
+            } else if (state is LoginError) {
+              return Text(state.message);
+            } else {
+              return main(context);
+            }
+          },
+        ),
       ),
     );
   }
 
   Widget main(BuildContext context){
+    final usernameController = TextEditingController();
+    final passwordController = TextEditingController();
+
+
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
       child: Column(
@@ -45,17 +71,19 @@ class LoginScreen extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: TextField(
-              decoration: InputDecoration(
+              controller: usernameController,
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Username',
               ),
             ),
           ),
-          const TextField(
-            decoration: InputDecoration(
+          TextField(
+            controller: passwordController,
+            decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Password',
             ),
@@ -63,7 +91,14 @@ class LoginScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+
+                final username = usernameController.text;
+                final password = passwordController.text;
+
+                BlocProvider.of<LoginBlocCubit>(context).login(username, password);
+
+              },
               child: const Text('Login'),
             ),
           ),

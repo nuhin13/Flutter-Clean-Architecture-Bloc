@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_clean_architecture/res/app_context_extension.dart';
+import 'package:flutter_clean_architecture/features/authentication/presentation/login/screens/login_screen.dart';
 
 import '../../features/authentication/data/repo_impl/auth_repository_impl.dart';
 import '../../features/authentication/domain/repository/auth_repository.dart';
 import '../../features/authentication/presentation/login/bloc/login_bloc_cubit.dart';
-import '../../features/authentication/presentation/login/screens/login_screen.dart';
 import '../../features/authentication/presentation/registration/bloc/registration_bloc.dart';
 import '../../features/trades/presentation/screens/trades_screen.dart';
 import '../../features/welcome/data/repo_impl/welcome_repository_impl.dart';
 import '../../features/welcome/domain/repository/welcome_repository.dart';
 import '../../features/welcome/presentation/splash/presentation/bloc/splash_bloc.dart';
-import '../../features/welcome/presentation/splash/presentation/screen/splash_screen.dart';
 import '../../routes/app_router.dart';
 import '../../routes/navigation_service.dart';
 
@@ -22,11 +20,10 @@ class AppRepositoryProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<AuthRepository>(
+            create: (context) => AuthRepositoryImpl()),
         RepositoryProvider<WelcomeRepository>(
             create: (context) => WelcomeRepositoryImpl()),
-        RepositoryProvider<AuthRepository>(
-          create: (context) => AuthRepositoryImpl(),
-        ),
       ],
       child: const AppBlocProvider(),
     );
@@ -44,7 +41,9 @@ class AppBlocProvider extends StatelessWidget {
           create: (context) => SplashBloc(),
         ),
         BlocProvider(
-          create: (_) => LoginBlocCubit(),
+          create: (_) => LoginBlocCubit(
+            RepositoryProvider.of<AuthRepository>(context),
+          ),
         ),
         BlocProvider(
           create: (context) => RegistrationBloc(),
@@ -57,7 +56,7 @@ class AppBlocProvider extends StatelessWidget {
         theme: ThemeData(
           appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
         ),
-        home: TradesScreen(),
+        home: LoginScreen(),
       ),
     );
   }
