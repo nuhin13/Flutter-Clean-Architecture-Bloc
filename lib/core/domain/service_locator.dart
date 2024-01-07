@@ -1,5 +1,7 @@
 import 'package:flutter_clean_architecture/features/authentication/data/repo_impl/auth_repository_impl.dart';
 import 'package:flutter_clean_architecture/features/authentication/domain/repository/auth_repository.dart';
+import 'package:flutter_clean_architecture/features/trades/data/http/trade_http_impl.dart';
+import 'package:flutter_clean_architecture/features/trades/domain/repo/trade_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import '../../app/app_config.dart';
@@ -46,6 +48,8 @@ Future<void> setUpServiceLocator(AppConfig appConfig) async {
       ));
 
   serviceLocator.registerFactory<AuthRepository>(() => AuthRepositoryImpl());
+
+  serviceLocator.registerFactory<TradeRepository>(() => TradeHttpImp());
 
   /*  serviceLocator.registerSingleton<NotificationService>(notificationService);
 

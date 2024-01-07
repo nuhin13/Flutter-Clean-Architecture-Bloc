@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/trade_item.dart';
+import '../../domain/model/trade_item.dart';
 
 Widget buildItem(TradeItem item) {
   return Card(

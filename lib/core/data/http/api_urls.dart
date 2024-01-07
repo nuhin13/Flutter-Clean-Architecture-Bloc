@@ -6,5 +6,6 @@ class ApiUrl {
   static final apiVersion = appConfig.getApiClientConfig().apiVersion;
 
   static final login = "$baseUrl/api/Account/Login";
+  static final tradeGetAll = "${baseUrl}api/Item/getall";
   static logCardView(int id) => "$baseUrl/api/v1/campaigns/$id/view";
 }

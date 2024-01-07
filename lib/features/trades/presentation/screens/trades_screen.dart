@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/features/trades/domain/trade_item.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_clean_architecture/features/trades/domain/model/trade_item.dart';
 
+import '../bloc/trades_bloc.dart';
 import '../widget/build_trade_item.dart';
 
 class TradesScreen extends StatelessWidget {
@@ -9,15 +11,32 @@ class TradesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<TradesBloc>().add(FetchTrades());
+
     return SafeArea(
       child: Scaffold(
-        body: _listView(),
+        body: BlocConsumer<TradesBloc, TradesState>(
+          listener: (context, state) {
+            if (state is TradesError) {
+              // Show error message
+            }
+          },
+          builder: (context, state) {
+            if (state is TradesLoading) {
+              return const CircularProgressIndicator();
+            } else if (state is TradesLoaded) {
+              return _listView(state.trades);
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ),
       ),
     );
   }
 
-  Widget _listView() {
-    List<TradeItem> tradeItems = generateTradeItems();
+  Widget _listView(List<TradeItem> tradeItems) {
+    // List<TradeItem> tradeItems = generateTradeItems();
     return ListView.builder(
       itemCount: tradeItems.length,
       itemBuilder: (context, index) {
