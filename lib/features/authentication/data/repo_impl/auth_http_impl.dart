@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_clean_architecture/core/data/http/base_http_repository.dart';
 import 'package:flutter_clean_architecture/core/domain/service_locator.dart';
 
 import '../../../../core/data/cache/base_cache.dart';
@@ -10,14 +11,10 @@ import '../../domain/model/user_info.dart';
 import '../../domain/repository/auth_repository.dart';
 import '../model/auth_login_response.dart';
 
-class AuthRepositoryImpl extends AuthRepository {
-  late ApiClient _client;
-  late BaseCache _cache;
+class AuthHttpImpl extends BaseHttpRepository implements AuthRepository {
+  late final ApiClient _client;
 
-  AuthRepositoryImpl() {
-    _client = serviceLocator<ApiClient>();
-    _cache = serviceLocator<BaseCache>();
-  }
+  AuthHttpImpl(this._client) : super(_client);
 
   @override
   Future<Either<dynamic, UserInfo>> login(AuthLoginReq req) async {
@@ -32,6 +29,8 @@ class AuthRepositoryImpl extends AuthRepository {
           fullName: authResponse.fullName ?? "",
           ogName: authResponse.organizationName ?? "",
           isSupperAdmin: authResponse.isSuperAdmin ?? "false",
+          accessToken: authResponse.accessToken ?? "",
+          refreshToken: authResponse.refreshToken ?? ""
         ));
       } else {
         return const Left(ConnectionFailure("response.data['message']"));

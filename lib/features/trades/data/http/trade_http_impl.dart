@@ -1,10 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_clean_architecture/core/data/http/base_http_repository.dart';
-import 'package:flutter_clean_architecture/core/domain/service_locator.dart';
 import 'package:flutter_clean_architecture/features/trades/data/model/item_list_response.dart';
 import 'package:flutter_clean_architecture/features/trades/domain/model/trade_item.dart';
 
-import '../../../../core/data/cache/base_cache.dart';
 import '../../../../core/data/http/api_client.dart';
 import '../../../../core/data/http/api_urls.dart';
 import '../../../../core/domain/failure.dart';

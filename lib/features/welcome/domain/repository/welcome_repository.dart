@@ -1,1 +1,3 @@
-abstract class WelcomeRepository {}
+abstract class WelcomeRepository {
+  Future<bool> isUserLoggedIn();
+}

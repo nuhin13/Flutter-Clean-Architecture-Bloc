@@ -1,7 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_clean_architecture/features/authentication/presentation/login/screens/login_screen.dart';
+import 'package:flutter_clean_architecture/features/trades/presentation/screens/trades_screen.dart';
 import 'package:flutter_clean_architecture/routes/route_paths.dart';
+
+import '../features/welcome/presentation/splash/presentation/screen/splash_screen.dart';
 
 class AppRouter {
   static Route generateRoute(RouteSettings settings) {
@@ -9,30 +13,21 @@ class AppRouter {
 
     switch (settings.name) {
       case RoutePaths.splash:
-        //widget =  SplashScreen();
+        widget =  SplashScreen();
         break;
-      case RoutePaths.welcome:
-        //widget = const WelcomeScreen();
+      case RoutePaths.loginScreen:
+        widget =  const LoginScreen();
         break;
-      case RoutePaths.otp:
-        //widget = OtpScreen(settings.arguments as OTPArgs?);
-        break;
-      case RoutePaths.profile:
-        //widget = const ProfileScreen();
-        break;
-      case RoutePaths.homepage:
-        //widget = HomepageScreen();
-        break;
-      case RoutePaths.commonError:
-        //widget = const ErrorScreen();
+      case RoutePaths.tradeScreen:
+        widget = const TradesScreen();
         break;
       default:
         return MaterialPageRoute(
-          builder: (context) => Container(),
+          builder: (context) => widget = Container(),
         );
     }
 
-    widget = Container(); // Have to remove while real navigation added
+    //widget = Container(); // Have to remove while real navigation added
 
     if (Platform.isIOS) {
       return MaterialPageRoute(

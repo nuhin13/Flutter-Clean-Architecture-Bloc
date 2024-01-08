@@ -1,11 +1,14 @@
+import 'package:flutter_clean_architecture/features/authentication/data/repo_impl/auth_cache_impl.dart';
+import 'package:flutter_clean_architecture/features/welcome/domain/usecase/welecom_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import '../../app/app_config.dart';
-import '../../features/authentication/data/repo_impl/auth_repository_impl.dart';
+import '../../features/authentication/data/repo_impl/auth_http_impl.dart';
 import '../../features/authentication/domain/repository/auth_repository.dart';
 import '../../features/trades/data/cache/trade_cache_impl.dart';
 import '../../features/trades/data/http/trade_http_impl.dart';
 import '../../features/trades/domain/repo/trade_repository.dart';
+import '../../features/welcome/domain/repository/welcome_repository.dart';
 import '../data/cache/base_cache.dart';
 import '../data/cache/preference_cache.dart';
 import '../data/http/api_client.dart';
@@ -113,21 +116,28 @@ class ServiceLocator {
     _registerRepoWithOutCache();
 
     // Register Repository with cache
-    _registerRepoWithCache();
+    _registerRepoWithCache(get<ApiClient>(), get<BaseCache>());
   }
 
   _registerRepoWithOutCache() {
-    registerFactory<AuthRepository>(() => AuthRepositoryImpl());
+     registerFactory<WelcomeRepository>(() => WelcomeUseCase());
   }
 
-  _registerRepoWithCache() {
-    _registerTradeRepositories();
+  _registerRepoWithCache(ApiClient client, BaseCache cache) {
+    _registerAuthRepositories(client, cache);
+    _registerTradeRepositories(client, cache);
   }
 
-  _registerTradeRepositories() {
-    var tradeHttp = TradeHttpImp(get<ApiClient>());
-    var tradeCache = TradeCacheImpl(get<BaseCache>(), tradeHttp);
+  _registerTradeRepositories(ApiClient client, BaseCache cache) {
+    var tradeHttp = TradeHttpImp(client);
+    var tradeCache = TradeCacheImpl(cache, tradeHttp);
     registerSingleton<TradeRepository>(tradeCache);
+  }
+
+  _registerAuthRepositories(ApiClient client, BaseCache cache) {
+    var authHttp = AuthHttpImpl(client);
+    var authCache = AuthCacheImpl(cache, authHttp);
+    registerSingleton<AuthRepository>(authCache);
   }
 
   static registerSingleton<T extends Object>(object) {

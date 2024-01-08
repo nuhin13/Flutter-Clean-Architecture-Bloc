@@ -1,7 +1,6 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_clean_architecture/core/domain/service_locator.dart';
 
 import '../../domain/model/trade_item.dart';
 import '../../domain/repo/trade_repository.dart';

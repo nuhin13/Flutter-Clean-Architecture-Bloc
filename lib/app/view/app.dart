@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/core/domain/service_locator.dart';
+import 'package:flutter_clean_architecture/features/authentication/presentation/login/screens/login_screen.dart';
+import 'package:flutter_clean_architecture/features/welcome/presentation/splash/presentation/screen/splash_screen.dart';
 
 import '../../features/authentication/domain/repository/auth_repository.dart';
 import '../../features/authentication/presentation/login/bloc/login_bloc_cubit.dart';
@@ -21,7 +23,7 @@ class AppRepositoryProvider extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
-            create: (context) => serviceLocator.get<AuthRepository>()),
+            create: (context) => serviceLocator<AuthRepository>()),
         RepositoryProvider(
             create: (context) => serviceLocator.get<WelcomeRepository>()),
         RepositoryProvider(
@@ -47,7 +49,9 @@ class AppBlocProvider extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => SplashBloc(),
+          create: (context) => SplashBloc(
+            RepositoryProvider.of<WelcomeRepository>(context),
+          ),
         ),
         BlocProvider(
           create: (_) => LoginBlocCubit(
@@ -70,7 +74,7 @@ class AppBlocProvider extends StatelessWidget {
         theme: ThemeData(
           appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
         ),
-        home: TradesScreen(),
+        home: SplashScreen(),
       ),
     );
   }

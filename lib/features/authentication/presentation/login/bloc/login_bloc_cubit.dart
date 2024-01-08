@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_clean_architecture/features/authentication/domain/model/auth_login_req.dart';
 
+import '../../../domain/model/auth_login_req.dart';
 import '../../../domain/repository/auth_repository.dart';
 
 part 'login_bloc_state.dart';
@@ -23,5 +23,4 @@ class LoginBlocCubit extends Cubit<LoginBlocState> {
           (user) => emit(LoginSuccess()),
     );
   }
-
 }

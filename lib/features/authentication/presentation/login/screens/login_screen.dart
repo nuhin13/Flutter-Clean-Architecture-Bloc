@@ -12,9 +12,6 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final loginBlocCubit = BlocProvider.of<LoginBlocCubit>(context);
-
-
     return SafeArea(
       child: Scaffold(
         body: BlocConsumer<LoginBlocCubit, LoginBlocState>(

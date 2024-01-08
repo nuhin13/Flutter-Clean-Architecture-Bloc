@@ -2,6 +2,7 @@
     <application
         android:label="flutter_clean_architecture"
         android:name="${applicationName}"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

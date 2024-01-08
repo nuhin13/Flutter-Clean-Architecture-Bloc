@@ -51,7 +51,7 @@ class NavigationService {
   static Future<void> logoutAndNavigateToLoginScreen() async {
     BuildContext context = navigatorKey.currentContext!;
      Navigator.of(context).pushNamedAndRemoveUntil(
-        RoutePaths.welcome, (Route<dynamic> route) => false);
+        RoutePaths.splash, (Route<dynamic> route) => false);
   }
 }
 
