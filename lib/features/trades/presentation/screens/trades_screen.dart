@@ -11,7 +11,7 @@ class TradesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<TradesBloc>().add(FetchTrades());
+    context.read<TradesBloc>().add(const FetchTrades());
 
     return SafeArea(
       child: Scaffold(
@@ -48,7 +48,7 @@ class TradesScreen extends StatelessWidget {
     );
   }
 
-  List<TradeItem> generateTradeItems() {
+  /*List<TradeItem> generateTradeItems() {
     List<TradeItem> tradeItems = List.generate(
       10,
       (index) => TradeItem()
@@ -59,6 +59,6 @@ class TradesScreen extends StatelessWidget {
         ..phone = '0192932834',
     );
     return tradeItems;
-  }
+  }*/
 }
 

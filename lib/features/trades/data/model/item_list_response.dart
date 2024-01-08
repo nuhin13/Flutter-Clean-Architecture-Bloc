@@ -166,8 +166,8 @@ class ItemData {
     String? measurementUnitId,
     String? name,
     bool? isService,
-    num? estimateBuyingPrice,
-    num? estimateSellingingPrice,
+    String? estimateBuyingPrice,
+    String? estimateSellingingPrice,
     dynamic sku,
     String? barcode,
     dynamic description,
@@ -314,8 +314,8 @@ class ItemData {
     _measurementUnitId = json['MeasurementUnitId'];
     _name = json['Name'];
     _isService = json['IsService'];
-    _estimateBuyingPrice = json['EstimateBuyingPrice'];
-    _estimateSellingingPrice = json['EstimateSellingingPrice'];
+    _estimateBuyingPrice = json['EstimateBuyingPrice'].toString();
+    _estimateSellingingPrice = json['EstimateSellingingPrice'].toString();
     _sku = json['SKU'];
     _barcode = json['Barcode'];
     _description = json['Description'];
@@ -378,8 +378,8 @@ class ItemData {
   String? _measurementUnitId;
   String? _name;
   bool? _isService;
-  num? _estimateBuyingPrice;
-  num? _estimateSellingingPrice;
+  String? _estimateBuyingPrice;
+  String? _estimateSellingingPrice;
   dynamic _sku;
   String? _barcode;
   dynamic _description;
@@ -452,8 +452,8 @@ class ItemData {
     String? measurementUnitId,
     String? name,
     bool? isService,
-    num? estimateBuyingPrice,
-    num? estimateSellingingPrice,
+    String? estimateBuyingPrice,
+    String? estimateSellingingPrice,
     dynamic sku,
     String? barcode,
     dynamic description,
@@ -613,9 +613,9 @@ class ItemData {
 
   bool? get isService => _isService;
 
-  num? get estimateBuyingPrice => _estimateBuyingPrice;
+  String? get estimateBuyingPrice => _estimateBuyingPrice;
 
-  num? get estimateSellingingPrice => _estimateSellingingPrice;
+  String? get estimateSellingingPrice => _estimateSellingingPrice;
 
   dynamic get sku => _sku;
 

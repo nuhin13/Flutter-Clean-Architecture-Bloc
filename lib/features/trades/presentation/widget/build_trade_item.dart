@@ -9,11 +9,9 @@ Widget buildItem(TradeItem item) {
         children: [
           Text("Name:${item.name}"),
           const SizedBox(height: 2),
-          Text("Address:${item.address}"),
+          Text("Selling Price: ${item.estimateSellingPrice}"),
           const SizedBox(height: 2),
-          Text("Contact Person:${item.contactPerson}"),
-          const SizedBox(height: 2),
-          Text('Contact Phone:${item.phone}'),
+          Text("Buying Price: ${item.estimateBuyingPrice}")
         ],
       ),
     ),

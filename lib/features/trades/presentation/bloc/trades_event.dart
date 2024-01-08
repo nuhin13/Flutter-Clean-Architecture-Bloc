@@ -5,6 +5,9 @@ abstract class TradesEvent extends Equatable {
 }
 
 class FetchTrades extends TradesEvent {
+
+  const FetchTrades();
+
   @override
   List<Object> get props => [];
 }

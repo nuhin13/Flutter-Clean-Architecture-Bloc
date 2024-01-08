@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_clean_architecture/features/trades/data/http/trade_http_impl.dart';
+import 'package:flutter_clean_architecture/core/domain/service_locator.dart';
 
-import '../../features/authentication/data/repo_impl/auth_repository_impl.dart';
 import '../../features/authentication/domain/repository/auth_repository.dart';
 import '../../features/authentication/presentation/login/bloc/login_bloc_cubit.dart';
 import '../../features/authentication/presentation/registration/bloc/registration_bloc.dart';
 import '../../features/trades/domain/repo/trade_repository.dart';
 import '../../features/trades/presentation/bloc/trades_bloc.dart';
 import '../../features/trades/presentation/screens/trades_screen.dart';
-import '../../features/welcome/data/repo_impl/welcome_repository_impl.dart';
 import '../../features/welcome/domain/repository/welcome_repository.dart';
 import '../../features/welcome/presentation/splash/presentation/bloc/splash_bloc.dart';
 import '../../routes/app_router.dart';
@@ -22,12 +20,19 @@ class AppRepositoryProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<AuthRepository>(
-            create: (context) => AuthRepositoryImpl()),
-        RepositoryProvider<WelcomeRepository>(
-            create: (context) => WelcomeRepositoryImpl()),
-        RepositoryProvider<TradeRepository>(
-            create: (context) => TradeHttpImp()),
+        RepositoryProvider(
+            create: (context) => serviceLocator.get<AuthRepository>()),
+        RepositoryProvider(
+            create: (context) => serviceLocator.get<WelcomeRepository>()),
+        RepositoryProvider(
+            create: (context) => serviceLocator.get<TradeRepository>()),
+
+        // RepositoryProvider<TradeRepository>(
+        //   create: (context) => TradeCacheImpl(
+        //     serviceLocator.get<BaseCache>(),
+        //     TradeHttpImp(serviceLocator.get<ApiClient>()),
+        //   ),
+        // ),
       ],
       child: const AppBlocProvider(),
     );

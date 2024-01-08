@@ -1,12 +1,11 @@
-import 'package:flutter_clean_architecture/features/authentication/data/repo_impl/auth_repository_impl.dart';
-import 'package:flutter_clean_architecture/features/authentication/domain/repository/auth_repository.dart';
-import 'package:flutter_clean_architecture/features/trades/data/http/trade_http_impl.dart';
-import 'package:flutter_clean_architecture/features/trades/domain/repo/trade_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import '../../app/app_config.dart';
-import '../../services/logout/logout_service.dart';
-import '../../services/notification/service.dart';
+import '../../features/authentication/data/repo_impl/auth_repository_impl.dart';
+import '../../features/authentication/domain/repository/auth_repository.dart';
+import '../../features/trades/data/cache/trade_cache_impl.dart';
+import '../../features/trades/data/http/trade_http_impl.dart';
+import '../../features/trades/domain/repo/trade_repository.dart';
 import '../data/cache/base_cache.dart';
 import '../data/cache/preference_cache.dart';
 import '../data/http/api_client.dart';
@@ -14,7 +13,7 @@ import '../data/http/api_client_config.dart';
 
 final serviceLocator = GetIt.instance;
 
-Future<void> setUpServiceLocator(AppConfig appConfig) async {
+/*Future<void> setUpServiceLocator(AppConfig appConfig) async {
   serviceLocator.registerSingleton<AppConfig>(appConfig);
 
   //check if user logged in or not
@@ -32,8 +31,8 @@ Future<void> setUpServiceLocator(AppConfig appConfig) async {
 
   // serviceLocator.registerSingleton<UserCacheService>(UserCacheService());
   //external
-  /*final sharedPreferences = await SharedPreferences.getInstance();
-  serviceLocator.registerFactory<SharedPreferences>(() => sharedPreferences);*/
+  */ /*final sharedPreferences = await SharedPreferences.getInstance();
+  serviceLocator.registerFactory<SharedPreferences>(() => sharedPreferences);*/ /*
   // request
   // serviceLocator.registerSingleton<Request>(Request());
 
@@ -51,14 +50,14 @@ Future<void> setUpServiceLocator(AppConfig appConfig) async {
 
   serviceLocator.registerFactory<TradeRepository>(() => TradeHttpImp());
 
-  /*  serviceLocator.registerSingleton<NotificationService>(notificationService);
+  */ /*  serviceLocator.registerSingleton<NotificationService>(notificationService);
 
   serviceLocator.registerSingleton<LogoutService>(
     LogoutService(
       cache: serviceLocator<BaseCache>(),
       notificationService: serviceLocator<NotificationService>(),
     ),
-  );*/
+  );*/ /*
 
   // serviceLocator.registerFactory<NotificationRepository>(() => NotificationHttpRepository(serviceLocator<ApiClient>()));
   //
@@ -79,4 +78,67 @@ Future<void> setUpServiceLocator(AppConfig appConfig) async {
   /// end campaign status change
 
   serviceLocator.registerSingleton<Logger>(Logger());
+}*/
+
+class ServiceLocator {
+  init({required AppConfig appConfig}) {
+    // Base Register
+    _baseRegister();
+
+    // Register Repositories
+    _registerRepositories();
+  }
+
+  _baseRegister() {
+    registerSingleton<AppConfig>(appConfig);
+
+    registerFactory<ApiClientConfig>(() =>
+        ApiClientConfig(
+          baseUrl: appConfig.apiBaseUrl,
+          isDebug: appConfig.debug,
+          apiVersion: appConfig.apiVersion,
+        ));
+
+    registerFactory<ApiClient>(
+            () =>
+            ApiClient(
+                get<ApiClientConfig>(), get<BaseCache>(),
+                Logger()));
+
+    registerFactory<BaseCache>(() => PreferenceCache());
+  }
+
+  _registerRepositories() {
+    // Register Repository without cache
+    _registerRepoWithOutCache();
+
+    // Register Repository with cache
+    _registerRepoWithCache();
+  }
+
+  _registerRepoWithOutCache() {
+    registerFactory<AuthRepository>(() => AuthRepositoryImpl());
+  }
+
+  _registerRepoWithCache() {
+    _registerTradeRepositories();
+  }
+
+  _registerTradeRepositories() {
+    var tradeHttp = TradeHttpImp(get<ApiClient>());
+    var tradeCache = TradeCacheImpl(get<BaseCache>(), tradeHttp);
+    registerSingleton<TradeRepository>(tradeCache);
+  }
+
+  static registerSingleton<T extends Object>(object) {
+    serviceLocator.registerSingleton<T>(object);
+  }
+
+  static registerFactory<T extends Object>(object) {
+    serviceLocator.registerFactory<T>(object);
+  }
+
+  static T get<T extends Object>() {
+    return serviceLocator.get<T>();
+  }
 }

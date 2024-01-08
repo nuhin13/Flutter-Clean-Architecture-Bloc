@@ -23,7 +23,10 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   await dotenv.load();
   appConfig.loadData(dotenv.env);
   // var notificationService = await _bootNotificationServices();
-  await setUpServiceLocator(appConfig);
+  //await ServiceLocator(appConfig);
+
+  ServiceLocator().init(appConfig: appConfig);
+
   await getVersion();
 
   runApp(await builder());
