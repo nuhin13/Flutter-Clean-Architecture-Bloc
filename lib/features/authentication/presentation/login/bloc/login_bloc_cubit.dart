@@ -13,7 +13,8 @@ class LoginBlocCubit extends Cubit<LoginBlocState> {
   LoginBlocCubit(this.authUseCase) : super(LoginBlocInitial());
 
   Future<void> login(String username, String password) async {
-    emit(LoginLoading());
+    var validity = await _checkingValidations(username, password);
+    if(!validity) return;
 
     final result = await authUseCase
         .doLogin(AuthLoginReq(userName: username, password: password));
@@ -24,5 +25,18 @@ class LoginBlocCubit extends Cubit<LoginBlocState> {
             user ? emit(LoginSuccess()) : emit(const LoginError('Login failed'));
           },
     );
+  }
+
+  Future<bool> _checkingValidations(String username, String password) async {
+    if (username.isEmpty) {
+      emit(const LoginError('Username cannot be empty'));
+      return false;
+    } else if (password.isEmpty) {
+      emit(const LoginError('Password cannot be empty'));
+      return false;
+    } else {
+      emit(LoginLoading());
+      return true;
+    }
   }
 }

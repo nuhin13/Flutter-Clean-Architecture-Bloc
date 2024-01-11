@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/res/app_context_extension.dart';
@@ -13,20 +12,24 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         body: BlocConsumer<LoginBlocCubit, LoginBlocState>(
           listener: (context, state) {
             if (state is LoginSuccess) {
               NavigationService.navigateReplaced(RoutePaths.tradeScreen);
+            } else if (state is LoginError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  duration: const Duration(seconds: 2),
+                ),
+              );
             }
           },
           builder: (context, state) {
             if (state is LoginLoading) {
               return const CircularProgressIndicator();
-            } else if (state is LoginError) {
-              return Text(state.message);
             } else {
               return main(context);
             }
@@ -36,10 +39,9 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget main(BuildContext context){
+  Widget main(BuildContext context) {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
-
 
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -47,10 +49,10 @@ class LoginScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-              height: 200,
-              width: 200,
+              height: 120,
+              width: 120,
               child: SvgPicture.asset(context.resources.drawable.splashImage)),
-
+          const SizedBox(height: 16),
           const Text(
             'Login to continue',
             style: TextStyle(
@@ -60,7 +62,7 @@ class LoginScreen extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-
+          const SizedBox(height: 8),
           const Text(
             ' We will send --------- code to login',
             style: TextStyle(
@@ -70,8 +72,9 @@ class LoginScreen extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
+          const SizedBox(height: 16),
           Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+            padding: const EdgeInsets.only(top: 8.0, bottom: 16.0),
             child: TextField(
               controller: usernameController,
               decoration: const InputDecoration(
@@ -88,17 +91,32 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: ElevatedButton(
-              onPressed: () {
-
-                final username = usernameController.text;
-                final password = passwordController.text;
-
-                BlocProvider.of<LoginBlocCubit>(context).login(username, password);
-
-              },
-              child: const Text('Login'),
+            padding: const EdgeInsets.only(top: 16.0),
+            child: SizedBox(
+              height: 40,
+              width: 140,
+              child: ElevatedButton(
+                onPressed: () {
+                  BlocProvider.of<LoginBlocCubit>(context)
+                      .login(usernameController.text, passwordController.text);
+                },
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.blue),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                  ),
+                ),
+                child: const Text(
+                  'Login',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
             ),
           ),
         ],
