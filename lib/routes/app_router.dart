@@ -5,7 +5,7 @@ import 'package:flutter_clean_architecture/features/authentication/presentation/
 import 'package:flutter_clean_architecture/features/trades/presentation/screens/trades_screen.dart';
 import 'package:flutter_clean_architecture/routes/route_paths.dart';
 
-import '../features/welcome/presentation/splash/presentation/screen/splash_screen.dart';
+import '../features/welcome/presentation/splash/screen/splash_screen.dart';
 
 class AppRouter {
   static Route generateRoute(RouteSettings settings) {
@@ -13,7 +13,7 @@ class AppRouter {
 
     switch (settings.name) {
       case RoutePaths.splash:
-        widget =  SplashScreen();
+        widget =  const SplashScreen();
         break;
       case RoutePaths.loginScreen:
         widget =  const LoginScreen();

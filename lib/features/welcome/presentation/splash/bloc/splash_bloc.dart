@@ -1,23 +1,22 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_clean_architecture/features/welcome/domain/repository/welcome_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_clean_architecture/features/welcome/domain/usecase/welecome_usecase.dart';
 
 part 'splash_event.dart';
-
 part 'splash_state.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
-  final WelcomeRepository welcomeRepository;
+  final WelcomeUseCase welcomeUseCase;
 
-  SplashBloc(this.welcomeRepository) : super(SplashInitial()) {
+  SplashBloc(this.welcomeUseCase) : super(SplashInitial()) {
     on<SplashNavigate>(_checkNavigation);
   }
 
   _checkNavigation(SplashEvent event, Emitter<SplashState> emit) async {
     emit(SplashLoading());
-    //Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
-    bool login = await welcomeRepository.isUserLoggedIn();
+    bool login = await welcomeUseCase.isUserLoggedIn();
 
     if (login) {
       emit(SplashToDashboard());

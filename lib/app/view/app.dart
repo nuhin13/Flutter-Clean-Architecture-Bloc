@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_clean_architecture/core/domain/service_locator.dart';
-import 'package:flutter_clean_architecture/features/authentication/presentation/login/screens/login_screen.dart';
-import 'package:flutter_clean_architecture/features/welcome/presentation/splash/presentation/screen/splash_screen.dart';
-
-import '../../features/authentication/domain/repository/auth_repository.dart';
+import 'package:flutter_clean_architecture/features/welcome/domain/usecase/welecome_usecase.dart';
+import '../../core/domain/service_locator.dart';
+import '../../features/authentication/domain/usecase/auth_use_case.dart';
 import '../../features/authentication/presentation/login/bloc/login_bloc_cubit.dart';
 import '../../features/authentication/presentation/registration/bloc/registration_bloc.dart';
 import '../../features/trades/domain/repo/trade_repository.dart';
 import '../../features/trades/presentation/bloc/trades_bloc.dart';
-import '../../features/trades/presentation/screens/trades_screen.dart';
-import '../../features/welcome/domain/repository/welcome_repository.dart';
-import '../../features/welcome/presentation/splash/presentation/bloc/splash_bloc.dart';
+import '../../features/welcome/presentation/splash/bloc/splash_bloc.dart';
+import '../../features/welcome/presentation/splash/screen/splash_screen.dart';
 import '../../routes/app_router.dart';
 import '../../routes/navigation_service.dart';
 
@@ -22,19 +19,11 @@ class AppRepositoryProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider(create: (context) => serviceLocator<AuthUseCase>()),
         RepositoryProvider(
-            create: (context) => serviceLocator<AuthRepository>()),
-        RepositoryProvider(
-            create: (context) => serviceLocator.get<WelcomeRepository>()),
+            create: (context) => serviceLocator.get<WelcomeUseCase>()),
         RepositoryProvider(
             create: (context) => serviceLocator.get<TradeRepository>()),
-
-        // RepositoryProvider<TradeRepository>(
-        //   create: (context) => TradeCacheImpl(
-        //     serviceLocator.get<BaseCache>(),
-        //     TradeHttpImp(serviceLocator.get<ApiClient>()),
-        //   ),
-        // ),
       ],
       child: const AppBlocProvider(),
     );
@@ -50,12 +39,12 @@ class AppBlocProvider extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => SplashBloc(
-            RepositoryProvider.of<WelcomeRepository>(context),
+            RepositoryProvider.of<WelcomeUseCase>(context),
           ),
         ),
         BlocProvider(
           create: (_) => LoginBlocCubit(
-            RepositoryProvider.of<AuthRepository>(context),
+            RepositoryProvider.of<AuthUseCase>(context),
           ),
         ),
         BlocProvider(
@@ -64,7 +53,9 @@ class AppBlocProvider extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (context) => RegistrationBloc(),
+          create: (context) => RegistrationBloc(
+            RepositoryProvider.of<AuthUseCase>(context),
+          ),
         ),
       ],
       child: MaterialApp(
@@ -74,7 +65,7 @@ class AppBlocProvider extends StatelessWidget {
         theme: ThemeData(
           appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
         ),
-        home: SplashScreen(),
+        home: const SplashScreen(),
       ),
     );
   }

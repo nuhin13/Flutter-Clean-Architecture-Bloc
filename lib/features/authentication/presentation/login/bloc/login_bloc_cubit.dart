@@ -2,25 +2,27 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/model/auth_login_req.dart';
-import '../../../domain/repository/auth_repository.dart';
+import '../../../domain/usecase/auth_use_case.dart';
 
 part 'login_bloc_state.dart';
 
 class LoginBlocCubit extends Cubit<LoginBlocState> {
 
-  final AuthRepository authRepository;
+  final AuthUseCase authUseCase;
 
-  LoginBlocCubit(this.authRepository) : super(LoginBlocInitial());
+  LoginBlocCubit(this.authUseCase) : super(LoginBlocInitial());
 
   Future<void> login(String username, String password) async {
     emit(LoginLoading());
 
-    final result = await authRepository
-        .login(AuthLoginReq(userName: username, password: password));
+    final result = await authUseCase
+        .doLogin(AuthLoginReq(userName: username, password: password));
 
     result.fold(
           (failure) => emit(LoginError(failure.message)),
-          (user) => emit(LoginSuccess()),
+          (user) {
+            user ? emit(LoginSuccess()) : emit(const LoginError('Login failed'));
+          },
     );
   }
 }
