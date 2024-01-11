@@ -16,7 +16,6 @@ class Resource<T> {
 
   factory Resource.fromApiResponse(dynamic response) {
     return Resource(
-      // response: response['data'],
       response: response,
       message: response['message'],
       messageCode: response['messageCode'],

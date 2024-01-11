@@ -38,10 +38,7 @@ class ServiceLocator {
         ));
 
     registerFactory<ApiClient>(
-            () =>
-            ApiClient(
-                get<ApiClientConfig>(), get<BaseCache>(),
-                Logger()));
+            () => ApiClient(get<ApiClientConfig>(), get<BaseCache>(), Logger()));
 
     registerFactory<BaseCache>(() => PreferenceCache());
   }
@@ -56,7 +53,7 @@ class ServiceLocator {
 
   _registerRepoWithOutCache() {
     // Register if any repository don't have any cache
-    registerFactory<WelcomeRepository>(() => WelcomeRepositoryImpl());
+    registerFactory<WelcomeRepository>(() => WelcomeRepositoryImpl(serviceLocator()));
 
     _registerUseCase();
   }

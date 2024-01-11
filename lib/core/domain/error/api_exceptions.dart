@@ -2,6 +2,12 @@ class RepositoryUnavailableException implements Exception {
   RepositoryUnavailableException([var message]);
 }
 
+class RepositoryException implements Exception {
+  final int code;
+  final String message;
+  RepositoryException(this.code, this.message);
+}
+
 class ApiException implements Exception {
   final int code;
   final String message;

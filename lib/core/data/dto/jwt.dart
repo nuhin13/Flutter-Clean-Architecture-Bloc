@@ -2,11 +2,20 @@ import 'dart:convert';
 
 class JWT {
   final String _token;
+  final String _refreshToken;
 
-  JWT(this._token);
+  JWT(this._token, this._refreshToken);
 
   @override
   String toString() {
+    return _token;
+  }
+
+  String getRefreshToken() {
+    return _refreshToken;
+  }
+
+  String getToken() {
     return _token;
   }
 

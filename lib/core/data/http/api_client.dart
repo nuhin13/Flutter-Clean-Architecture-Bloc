@@ -1,20 +1,59 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_clean_architecture/core/domain/extensions/string_util.dart';
+import 'package:flutter_clean_architecture/core/domain/service_locator.dart';
+import 'package:flutter_clean_architecture/features/authentication/domain/model/user_info.dart';
 import 'package:flutter_pretty_dio_logger/flutter_pretty_dio_logger.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../routes/navigation_service.dart';
 import '../../domain/error/api_exceptions.dart';
 import '../cache/base_cache.dart';
 import '../cache/preference/shared_preference_constants.dart';
+import '../dto/jwt.dart';
 import 'api_client_config.dart';
 import 'resource.dart';
 
 Dio _dio = Dio();
 
+enum _TokenizeRequest {
+  withoutAnyToken,
+  withValidToken,
+  withCurrentToken,
+}
+
 class ApiClient {
   final ApiClientConfig _config;
+  final BaseCache _cache;
+
+  JWT? _token;
+  Future? _ongoingRefreshCall;
+  bool isRefresh = false;
   var _logger;
+
+  ApiClient(this._config, this._cache, this._logger) {
+    setToken();
+  }
+
+  ApiClientConfig get config => _config;
+
+  bool hasToken() {
+    return _token != null;
+  }
+
+  Future<void> setToken() async {
+    var userInfo = await _cache.get(SharedPreferenceConstant.customerInfo);
+
+    if (userInfo != null) {
+      UserInfo info = UserInfo.fromJsonString(userInfo);
+      _token = JWT(info.accessToken, info.refreshToken ?? "No refresh token");
+    }
+  }
+
+  JWT getToken() {
+    return _token!;
+  }
 
   get logger => _logger;
 
@@ -22,21 +61,58 @@ class ApiClient {
     _logger = value;
   }
 
-  // String? _token;
-
-  final BaseCache _cache;
-  Future? _ongoingRefreshCall;
-  bool isRefresh = false;
-
-  ApiClient(this._config, this._cache, this._logger);
-
-  ApiClientConfig get config => _config;
-
   void removeToken() {
+    _token = null;
+
     _cache.flushAll().then((value) {
       NavigationService.logoutAndNavigateToLoginScreen();
     });
+    //Dispatcher.fire(LoggedOutEvent());
   }
+
+  //
+  // Future<Options> _makeOptions(_TokenizeRequest tokenize) async {
+  //   var headers = {
+  //     'Accept': ContentType.json.mimeType,
+  //     'X-App-Version': (await PackageInfo.fromPlatform()).buildNumber,
+  //     'X-App-Platform': Platform.isIOS ? "iOS" : "android"
+  //   };
+  //
+  //   if (tokenize == _TokenizeRequest.withoutAnyToken) return Options(headers: headers);
+  //   headers = await _addAuthHeader(headers, tokenize);
+  //   return Options(headers: headers);
+  // }
+  //
+  // Future<Map<String, String>> _addAuthHeader(Map<String, String> headers, _TokenizeRequest tokenize) async {
+  //   var token = await _getToken(tokenize);
+  //   headers["authorization"] = "Bearer ${token.toString()}";
+  //   return headers;
+  // }
+  //
+  // Future<JWT> _getToken(_TokenizeRequest tokenize) async {
+  //   if (_token == null) throw ArgumentError.notNull("Token");
+  //   if (tokenize == _TokenizeRequest.withCurrentToken) return _token!;
+  //   if (_token!.isAlive()) return _token!;
+  //
+  //   await _refreshToken();
+  //   return _token!;
+  // }
+  //
+  // Future<void> _refreshToken() async {
+  //   try {
+  //     await _handleAuthorizationError(() async {
+  //       _ongoingRefreshCall ??= _post('/api/customer/refresh?token=true', _TokenizeRequest.withCurrentToken, {});
+  //       var response = await _ongoingRefreshCall;
+  //       _ongoingRefreshCall = null;
+  //       _token = JWT(response['token']);
+  //       //Dispatcher.fire(TokenUpdatedEvent(_token!));
+  //       return response;
+  //     }, retry: 0);
+  //   } on UnauthorizedException {
+  //     removeToken();
+  //     rethrow;
+  //   }
+  // }
 
   Future<Resource> get(String uri, {Map<String, dynamic>? queryParams}) async {
     return _get(uri, false, queryParams);
@@ -112,8 +188,8 @@ class ApiClient {
         data: hasFile
             ? FormData.fromMap(data)
             : isFormData == true
-                ? FormData.fromMap(data!)
-                : data,
+            ? FormData.fromMap(data!)
+            : data,
         options: options,
       );
     });
@@ -215,15 +291,6 @@ class ApiClient {
 
   String _makeUrl(String uri) {
     return uri;
-    // if (uri.startsWith(_config.accountKitBaseUrl) ||
-    //     uri.startsWith(_config.accountBaseUrl) ||
-    //     uri.startsWith(_config.accountAuthBaseUrl)) {
-    //   return uri;
-    // } else if (uri.startsWith(Urls.baseUrl)) {
-    //   return uri;
-    // }
-
-    // return '${_config.baseUrl.trimChar('/')}/${uri.trimChar('/')}';
   }
 
   Future<Options> _makeOptions(bool tokenize) async {
@@ -251,28 +318,41 @@ class ApiClient {
           NavigationService.navigatorKey.currentContext!) == const Locale('ja')
           ? "jp" : "en",
       "Version": version,
-      // 'portal-name': _config.portal-nametalName,
-      // 'user-id': "",
-      // 'User-Agent': _config.systemInfo,
-      // 'version-code': _config.versionCode,
     };
     return header;
   }
 
   Future<Map<String, dynamic>> _addAuthHeader(Map<String, dynamic> headers) async {
-    String? token = await _getToken();
-    headers["authorization"] = "Bearer $token";
+    JWT? token = await _getToken();
+    headers["authorization"] = "Bearer ${token.getToken()}";
     return headers;
   }
 
-  Future<String?> _getToken() async {
-    String? token;
-    if (isRefresh) {
-      token = await _cache.get(SharedPreferenceConstant.refreshToken);
-    } else {
-      token = await _cache.get(SharedPreferenceConstant.jwt);
+  Future<JWT> _getToken() async {
+    if (_token == null) throw ArgumentError.notNull("Token");
+    // if (tokenize == _TokenizeRequest.withCurrentToken) return _token!;
+    //if (_token!.isAlive()) return _token!;
+
+    return _token!;
+
+    await _refreshToken();
+    return _token!;
+  }
+
+  Future<void> _refreshToken() async {
+    try {
+      await _handleAuthorizationError(() async {
+        _ongoingRefreshCall ??= _post('/refresh_token', false, {});
+        var response = await _ongoingRefreshCall;
+        _ongoingRefreshCall = null;
+        // _token = JWT(response['token']);
+        //Dispatcher.fire(TokenUpdatedEvent(_token!));
+        return response;
+      }, retry: 0);
+    } on UnauthorizedException {
+      removeToken();
+      rethrow;
     }
-    if (token == null) throw ArgumentError.notNull("Token");
-    return token;
   }
 }
+

@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/res/app_context_extension.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../../routes/navigation_service.dart';
+import '../../../../../routes/route_paths.dart';
 import '../bloc/login_bloc_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -17,7 +19,7 @@ class LoginScreen extends StatelessWidget {
         body: BlocConsumer<LoginBlocCubit, LoginBlocState>(
           listener: (context, state) {
             if (state is LoginSuccess) {
-              // Navigate to a new screen
+              NavigationService.navigateReplaced(RoutePaths.tradeScreen);
             }
           },
           builder: (context, state) {
@@ -47,7 +49,7 @@ class LoginScreen extends StatelessWidget {
           SizedBox(
               height: 200,
               width: 200,
-              child: SvgPicture.asset(context.resources.drawable.loginDiziCash)),
+              child: SvgPicture.asset(context.resources.drawable.splashImage)),
 
           const Text(
             'Login to continue',
@@ -69,7 +71,7 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: TextField(
               controller: usernameController,
               decoration: const InputDecoration(

@@ -26,13 +26,12 @@ class AuthHttpImpl extends BaseHttpRepository implements AuthRepository {
             AuthLoginResponse.fromJson(response.response);
 
         return Right(UserInfo(
-          userName: authResponse.userName ?? "",
-          fullName: authResponse.fullName ?? "",
-          ogName: authResponse.organizationName ?? "",
-          isSupperAdmin: authResponse.isSuperAdmin ?? "false",
-          accessToken: authResponse.accessToken ?? "",
-          refreshToken: authResponse.refreshToken ?? ""
-        ));
+            userName: authResponse.userName ?? "",
+            fullName: authResponse.fullName ?? "",
+            ogrName: authResponse.organizationName ?? "",
+            role: authResponse.isSuperAdmin ?? "admin",
+            accessToken: authResponse.accessToken ?? "",
+            refreshToken: authResponse.refreshToken ?? ""));
       } else {
         return const Left(ConnectionFailure("response.data['message']"));
       }
@@ -57,5 +56,10 @@ class AuthHttpImpl extends BaseHttpRepository implements AuthRepository {
   Future<Either> registration(AuthRegistrationReq req) {
     // TODO: implement registration
     throw UnimplementedError();
+  }
+
+  @override
+  Future<void> jwtUpdated() async {
+    await _client.setToken();
   }
 }

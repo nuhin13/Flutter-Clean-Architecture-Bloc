@@ -15,4 +15,6 @@ abstract class AuthRepository {
   Future<Either<dynamic, dynamic>> gmailLogin(AuthGmailReq req);
 
   Future<Either<dynamic, dynamic>> facebookLogin(AuthFacebookReq req);
+
+  Future<void> jwtUpdated();
 }

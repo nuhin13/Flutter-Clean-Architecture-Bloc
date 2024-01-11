@@ -27,23 +27,6 @@ class TradeItemList {
 
   TradeItemList({this.tradeItems});
 
-  // TradeItemList.fromJson(dynamic json) {
-  //   if (json['tradeItems'] != null) {
-  //     tradeItems = <TradeItem>[];
-  //     json['tradeItems'].forEach((dynamic v) {
-  //       tradeItems!.add(TradeItem.fromJson(v));
-  //     });
-  //   }
-  // }
-  //
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = <String, dynamic>{};
-  //   if (tradeItems != null) {
-  //     data['tradeItems'] = tradeItems!.map((v) => v.toJson()).toList();
-  //   }
-  //   return data;
-  // }
-
   factory TradeItemList.fromDynamicList(List<dynamic> list) {
     var orders = <TradeItem>[];
     for (var item in list) {

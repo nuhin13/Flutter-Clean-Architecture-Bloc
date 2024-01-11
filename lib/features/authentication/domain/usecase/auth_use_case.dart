@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_clean_architecture/features/authentication/domain/model/auth_facebook_req.dart';
-import 'package:flutter_clean_architecture/features/authentication/domain/model/auth_gmail_req.dart';
 
 import '../../../../core/domain/failure.dart';
+import '../model/auth_facebook_req.dart';
+import '../model/auth_gmail_req.dart';
 import '../model/auth_login_req.dart';
 import '../model/auth_reg_req.dart';
 import '../model/user_info.dart';
