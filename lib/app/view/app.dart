@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/features/welcome/domain/usecase/welecome_usecase.dart';
+import 'package:flutter_clean_architecture/res/app_context_extension.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 import '../../core/domain/service_locator.dart';
 import '../../features/authentication/domain/usecase/auth_use_case.dart';
 import '../../features/authentication/presentation/login/bloc/login_bloc_cubit.dart';
@@ -9,6 +12,7 @@ import '../../features/trades/domain/repo/trade_repository.dart';
 import '../../features/trades/presentation/bloc/trades_bloc.dart';
 import '../../features/welcome/presentation/splash/bloc/splash_bloc.dart';
 import '../../features/welcome/presentation/splash/screen/splash_screen.dart';
+import '../../res/app_localizations_delegate.dart';
 import '../../routes/app_router.dart';
 import '../../routes/navigation_service.dart';
 
@@ -25,16 +29,20 @@ class AppRepositoryProvider extends StatelessWidget {
         RepositoryProvider(
             create: (context) => serviceLocator.get<TradeRepository>()),
       ],
-      child: const AppBlocProvider(),
+      child: AppBlocProvider(),
     );
   }
 }
 
 class AppBlocProvider extends StatelessWidget {
-  const AppBlocProvider({Key? key}) : super(key: key);
+  Locale? _locale;
+
+  AppBlocProvider({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    _locale = const Locale("en");
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -61,7 +69,29 @@ class AppBlocProvider extends StatelessWidget {
       child: MaterialApp(
         navigatorKey: NavigationService.navigatorKey,
         onGenerateRoute: AppRouter.generateRoute,
-        title: "context.resources.strings!.appName",
+        locale: _locale,
+        supportedLocales: const [
+          Locale("en"),
+          Locale("bn"),
+        ],
+        localizationsDelegates: const [
+          AppLocalizationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          DefaultMaterialLocalizations.delegate,
+          DefaultWidgetsLocalizations.delegate
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocal in supportedLocales) {
+            if (supportedLocal.languageCode == locale?.languageCode &&
+                supportedLocal.countryCode == locale?.countryCode) {
+              return supportedLocal;
+            }
+          }
+          return supportedLocales.first;
+        },
+        title: context.resources.strings?.appName ?? "Flutter Demo App",
         theme: ThemeData(
           appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
         ),

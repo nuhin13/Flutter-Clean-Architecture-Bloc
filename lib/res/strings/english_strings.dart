@@ -6,10 +6,10 @@ class EnglishStrings extends Strings {
 
   @override
   String get loginDescription =>
-      'In everyday life "I want you to know" and meet.';
+      'We will send --------- code to login';
 
   @override
-  String get loginText => "Log in with your Email";
+  String get loginText => "Login to continue";
 
   @override
   String get registrationText => "Register with Email";

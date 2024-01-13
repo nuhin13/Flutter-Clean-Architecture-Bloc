@@ -53,9 +53,9 @@ class LoginScreen extends StatelessWidget {
               width: 120,
               child: SvgPicture.asset(context.resources.drawable.splashImage)),
           const SizedBox(height: 16),
-          const Text(
-            'Login to continue',
-            style: TextStyle(
+          Text(
+            '${context.resources.strings?.loginText}',
+            style: const TextStyle(
               color: Color(0xFF445164),
               fontSize: 24,
               fontFamily: 'Inter',
@@ -63,9 +63,9 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
-            ' We will send --------- code to login',
-            style: TextStyle(
+          Text(
+            '${context.resources.strings?.loginDescription}',
+            style: const TextStyle(
               color: Color(0xFF171930),
               fontSize: 16,
               fontFamily: 'Inter',

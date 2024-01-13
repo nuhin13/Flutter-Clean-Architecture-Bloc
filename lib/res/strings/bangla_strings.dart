@@ -24,10 +24,10 @@ class BanglaStrings extends Strings {
 
   @override
   String get loginDescription =>
-      'In everyday life "I want you to know" and meet.';
+      'আমরা লগইন করার জন্য --------- কোড পাঠাব';
 
   @override
-  String get loginText => "Log in with your Email";
+  String get loginText => "চালিয়ে যাওয়ার জন্য লগইন করুন";
 
   @override
   String get registrationText => "Register with Email";
