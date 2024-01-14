@@ -1,10 +1,10 @@
 import '../../../../app/app.dart';
 
 part 'authentication_api_urls.dart';
-
 part 'dashboard_api_urls.dart';
+part 'trade_api_urls.dart';
 
-class ApiUrl implements AuthenticationApiUrls, DashboardApiUrls {
+class ApiUrl implements AuthenticationApiUrls, DashboardApiUrls, TradeApiUrls {
   var baseUrl = "${appConfig.getApiClientConfig().baseUrl}api/";
   var apiVersion = appConfig.getApiClientConfig().apiVersion;
 
@@ -22,4 +22,7 @@ class ApiUrl implements AuthenticationApiUrls, DashboardApiUrls {
 
   @override
   String get getAllTrade => "${baseUrl}Item/getall";
+
+  @override
+  String get getDashboardData => throw UnimplementedError();
 }

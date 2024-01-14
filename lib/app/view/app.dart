@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_clean_architecture/features/welcome/domain/usecase/welecome_usecase.dart';
-import 'package:flutter_clean_architecture/res/app_context_extension.dart';
+import 'package:flutter_clean_architecture/features/trades/domain/usecase/trades_use_case.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import '../../core/domain/di/service_locator.dart';
+import '../../core/core_export.dart';
 import '../../features/authentication/domain/usecase/auth_use_case.dart';
 import '../../features/authentication/presentation/login/bloc/login_bloc_cubit.dart';
 import '../../features/authentication/presentation/registration/bloc/registration_bloc.dart';
+import '../../features/feature_screen_export.dart';
 import '../../features/trades/domain/repo/trade_repository.dart';
 import '../../features/trades/presentation/bloc/trades_bloc.dart';
+import '../../features/welcome/domain/usecase/welecome_usecase.dart';
 import '../../features/welcome/presentation/splash/bloc/splash_bloc.dart';
-import '../../features/welcome/presentation/splash/screen/splash_screen.dart';
-import '../../res/app_localizations_delegate.dart';
-import '../../routes/app_router.dart';
-import '../../routes/navigation_service.dart';
+import '../../res/res_export.dart';
+import '../../services/navigation/navigation_service.dart';
 
 class AppRepositoryProvider extends StatelessWidget {
   const AppRepositoryProvider({Key? key}) : super(key: key);
@@ -27,17 +26,22 @@ class AppRepositoryProvider extends StatelessWidget {
         RepositoryProvider(
             create: (context) => serviceLocator.get<WelcomeUseCase>()),
         RepositoryProvider(
-            create: (context) => serviceLocator.get<TradeRepository>()),
+            create: (context) => serviceLocator.get<TradeUseCase>()),
       ],
-      child: AppBlocProvider(),
+      child: const AppBlocProvider(),
     );
   }
 }
 
-class AppBlocProvider extends StatelessWidget {
-  Locale? _locale;
+class AppBlocProvider extends StatefulWidget {
+  const AppBlocProvider({Key? key}) : super(key: key);
 
-  AppBlocProvider({Key? key}) : super(key: key);
+  @override
+  State<AppBlocProvider> createState() => _AppBlocProviderState();
+}
+
+class _AppBlocProviderState extends State<AppBlocProvider> {
+  Locale? _locale;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +61,7 @@ class AppBlocProvider extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => TradesBloc(
-            RepositoryProvider.of<TradeRepository>(context),
+            RepositoryProvider.of<TradeUseCase>(context),
           ),
         ),
         BlocProvider(

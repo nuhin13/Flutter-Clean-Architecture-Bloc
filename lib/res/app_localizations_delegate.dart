@@ -3,7 +3,7 @@ import '../../res/strings/english_strings.dart';
 import '../../res/strings/bangla_strings.dart';
 import '../../res/strings/strings.dart';
 
-class AppLocalizationsDelegate extends LocalizationsDelegate<Strings> {
+class AppLocalizationsDelegate extends LocalizationsDelegate<CommonStrings> {
 
   const AppLocalizationsDelegate();
 
@@ -11,9 +11,9 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<Strings> {
   bool isSupported(Locale locale) => ['en', 'bn'].contains(locale.languageCode);
 
   @override
-  Future<Strings> load(Locale locale) => _load(locale);
+  Future<CommonStrings> load(Locale locale) => _load(locale);
 
-  static Future<Strings> _load(Locale locale) async {
+  static Future<CommonStrings> _load(Locale locale) async {
     switch (locale.languageCode) {
       case 'en':
         return EnglishStrings();
@@ -25,6 +25,6 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<Strings> {
   }
 
   @override
-  bool shouldReload(LocalizationsDelegate<Strings> old) => false;
+  bool shouldReload(LocalizationsDelegate<CommonStrings> old) => false;
   
 }

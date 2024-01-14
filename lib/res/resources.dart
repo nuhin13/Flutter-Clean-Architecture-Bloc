@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import '../../res/drawable/app_drawable.dart';
-import '../../res/style/app_style.dart';
-import 'colors/app_colors.dart';
-import 'dimentions/app_dimension.dart';
+import '../core/core_export.dart';
 import 'strings/strings.dart';
 
 class Resources {
@@ -10,8 +8,8 @@ class Resources {
   final BuildContext _context;
   Resources(this._context);
 
-  Strings? get strings {
-    return Localizations.of<Strings>(_context, Strings);
+  CommonStrings? get strings {
+    return Localizations.of<CommonStrings>(_context, CommonStrings);
   }
 
   AppColors get color {

@@ -1,5 +1,5 @@
 part of 'api_urls.dart';
 
 abstract class DashboardApiUrls {
-  String get getAllTrade;
+  String get getDashboardData;
 }

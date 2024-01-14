@@ -1,12 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_clean_architecture/features/authentication/domain/model/auth_facebook_req.dart';
-import 'package:flutter_clean_architecture/features/authentication/domain/model/auth_gmail_req.dart';
-import 'package:flutter_clean_architecture/features/authentication/domain/model/auth_reg_req.dart';
-import '../../../../core/data/cache/client/base_cache.dart';
-import '../../../../core/data/cache/client/base_cache_repository.dart';
-import '../../../../core/data/cache/preference/shared_preference_constants.dart';
-import '../../../../core/domain/error/failure.dart';
+import '../../../../core/core_export.dart';
+import '../../domain/model/auth_facebook_req.dart';
+import '../../domain/model/auth_gmail_req.dart';
 import '../../domain/model/auth_login_req.dart';
+import '../../domain/model/auth_reg_req.dart';
 import '../../domain/model/user_info.dart';
 import '../../domain/repository/auth_repository.dart';
 import 'auth_http_impl.dart';

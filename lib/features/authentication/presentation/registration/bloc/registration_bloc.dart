@@ -5,7 +5,6 @@ import '../../../domain/model/auth_reg_req.dart';
 import '../../../domain/usecase/auth_use_case.dart';
 
 part 'registration_event.dart';
-
 part 'registration_state.dart';
 
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {

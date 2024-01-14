@@ -1,12 +1,16 @@
-import '../../res/drawable/drawables.dart';
 
-class AppDrawable extends Drawables {
+import 'drawables.dart';
+
+class AppDrawable implements BasicDrawables {
+
+  String baseSvg = "assets/svgs/";
+  String basePng = "assets/images/";
+
   @override
   String get logoSmall => "${basePng}logo_small.png";
 
-
   @override
-  String get splashImage => "${baseSvg}dizi_splash.svg";
+  String get splashImage => "${baseSvg}splash.svg";
 
   @override
   String get welcomeBackground => "${basePng}welcome_background.png";
@@ -27,9 +31,6 @@ class AppDrawable extends Drawables {
   String get seen => "${baseSvg}seen.svg";
 
   @override
-  String get campaignDefault => "${basePng}campaign_card_icon.png";
-
-  @override
   String get menuIcon => "${basePng}menu_icon.png";
 
   @override
@@ -39,5 +40,11 @@ class AppDrawable extends Drawables {
   String get errorIcon => "${basePng}error_icon.png";
 
   @override
-  String get loginDiziCash => "${baseSvg}dizi_cash.svg";
+  String get dashboardImage => throw UnimplementedError();
+
+  @override
+  String get loginLowerPart => throw UnimplementedError();
+
+  @override
+  String get loginUpperImage => throw UnimplementedError();
 }

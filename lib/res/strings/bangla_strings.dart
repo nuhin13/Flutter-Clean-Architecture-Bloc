@@ -1,8 +1,9 @@
 import 'strings.dart';
 
-class BanglaStrings extends Strings {
+class BanglaStrings extends CommonStrings {
+
   @override
-  String get appName => "Dizi Cashier";
+  String get appName => "Flutter Demo";
 
   @override
   String get verify => "Verify";
@@ -23,182 +24,92 @@ class BanglaStrings extends Strings {
   String get resend => "Resend";
 
   @override
-  String get loginDescription =>
-      'আমরা লগইন করার জন্য --------- কোড পাঠাব';
+  String get about => "about";
 
   @override
-  String get loginText => "চালিয়ে যাওয়ার জন্য লগইন করুন";
+  String get contactUs => "contact us";
 
   @override
-  String get registrationText => "Register with Email";
+  String get dashboard => throw UnimplementedError();
 
   @override
-  String get registrationGoogleText => "Register with Google";
+  String get help => throw UnimplementedError();
 
   @override
-  String get registrationAppleText => "Register with Apple";
+  String get faq => throw UnimplementedError();
 
   @override
-  String get proceedToRegister => "Proceed to member registration";
+  String get profile => throw UnimplementedError();
 
   @override
-  String get proceedToLogin => "Click here if you have an account";
+  String get logout => throw UnimplementedError();
 
   @override
-  String get next => "Next";
+  String get settings => throw UnimplementedError();
 
   @override
-  String get login => "Login";
+  String get termsAndConditions => throw UnimplementedError();
 
   @override
-  String get forgotPassword => "Forgot Password";
+  String get email => throw UnimplementedError();
 
   @override
-  String get verification => "Verification";
+  String get emailHint => throw UnimplementedError();
 
   @override
-  String get enterVerification => "Enter Verification Code";
+  String get enterEmail => throw UnimplementedError();
 
   @override
-  String get joinFree => "Join Free";
+  String get enterEmailInstructions => throw UnimplementedError();
 
   @override
-  String get email => "Email Address";
+  String get enterVerification => throw UnimplementedError();
 
   @override
-  String get emailHint => "example@gmail.com";
+  String get forgotPassword => throw UnimplementedError();
 
   @override
-  String get enterEmail => "Enter Email Address";
+  String get invalidNumberToast => throw UnimplementedError();
 
   @override
-  String get enterEmailInstructions =>
-      "Enter the email associated with your account to receive reset instructions";
+  String get login => throw UnimplementedError();
 
   @override
-  String get password => "Password";
+  String get loginDescription => "'আমরা লগইন করার জন্য --------- কোড পাঠাব'";
 
   @override
-  String get passwordHint => "Enter Password";
+  String get loginUpperText => "চালিয়ে যাওয়ার জন্য লগইন করুন";
 
   @override
-  String get obscurePassword => "********";
+  String get next => "পরবর্তী";
 
   @override
-  String get newPassword => "New Password";
+  String get password => throw UnimplementedError();
 
   @override
-  String get enterNewPassword => "Enter New Password";
+  String get passwordHint => throw UnimplementedError();
 
   @override
-  String get confirmPassword => "Confirm Password";
+  String get privacyPolicy => throw UnimplementedError();
 
   @override
-  String get storeInformation => "Store Information";
+  String get proceedToLogin => throw UnimplementedError();
 
   @override
-  String get companyInformation => "Company Name (Optional)";
+  String get proceedToRegister => throw UnimplementedError();
 
   @override
-  String get companyName => "Company Name";
+  String get registration => throw UnimplementedError();
 
   @override
-  String get storeName => "Store Name";
+  String get tryAfterSometimeToast => throw UnimplementedError();
 
   @override
-  String get storeNameError => "Not Entered";
-
-  @override
-  String get storeAddress => "Store Address";
-
-  @override
-  String get enterAddress => "Enter Address";
-
-  @override
-  String get searchStore => "Search for the Store";
-
-  @override
-  String get mapLocation => "Map Location";
-
-  @override
-  String get setOnMap => "Set on map";
-
-  @override
-  String get setLocation => "Set location";
-
-  @override
-  String get zipCode => "Zip Code";
-
-  @override
-  String get zipCodeError => 'Please enter in the format "000-0000"';
-
-  @override
-  String get zipHint => "000-0000";
-
-  @override
-  String get prefecture => "Prefecture";
-
-  @override
-  String get streetNumber => "Street Number";
-
-  @override
-  String get buildingName => "Building Name";
-
-  @override
-  String get nearestStation => "Nearest Station";
-
-  @override
-  String get storePhone => "Store Phone Number";
-
-  @override
-  String get storePhoneError => 'Please enter in the format "000-0000-0000"';
-
-  @override
-  String get storePhoneHint => "070-0000-0000";
-
-  @override
-  String get createAccount => "Create Account";
-
-  @override
-  String get otpText => "If you didn’t receive a code!";
-
-  @override
-  String get passwordResetSuccessTitle => "Password Changed Successfully";
-
-  @override
-  String get passwordResetSuccessSubtitle =>
-      "Always keep your password safe and never share it with anybody";
-
-  @override
-  String get doNotMatch => "Your both password doesn't match";
-
-  @override
-  String get emailExistError => "This email address already exists";
-
-  @override
-  String get tryAfterSometimeToast => "Please wait sometime... and try again";
-
-  @override
-  String get otpEmptyToast => "Please input otp";
-
-  @override
-  String get invalidNumberToast => "Please input a valid number";
+  String get verification => throw UnimplementedError();
 
   @override
   String get mobilePattern => r'\+?(88)?0?1[3456789][0-9]{8}\b';
 
   @override
   String get numberOnly => r'^[0-9]+$';
-
-  @override
-  String get otpBarTitle => "";
-
-  @override
-  String get otpTitle => "";
-
-  @override
-  String get otpSend => "";
-
-  @override
-  String get otpResend => "";
 }

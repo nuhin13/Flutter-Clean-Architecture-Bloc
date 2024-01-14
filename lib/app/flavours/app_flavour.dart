@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../../core/domain/di/service_locator.dart';
-import '../../services/services.dart';
+import '../../services/services_export.dart';
 import 'app_config.dart';
 
 Future<NotificationService> _bootNotificationServices() async {

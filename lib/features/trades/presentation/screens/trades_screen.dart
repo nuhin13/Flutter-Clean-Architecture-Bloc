@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_clean_architecture/features/trades/domain/model/trade_item.dart';
 
+import '../../domain/entity/trade_item.dart';
 import '../bloc/trades_bloc.dart';
 import '../widget/build_trade_item.dart';
 

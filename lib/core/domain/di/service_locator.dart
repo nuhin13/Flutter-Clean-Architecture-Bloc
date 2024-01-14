@@ -11,6 +11,7 @@ import '../../../features/authentication/domain/repository/auth_repository.dart'
 import '../../../features/trades/data/cache/trade_cache_impl.dart';
 import '../../../features/trades/data/http/trade_http_impl.dart';
 import '../../../features/trades/domain/repo/trade_repository.dart';
+import '../../../features/trades/domain/usecase/trades_use_case.dart';
 import '../../data/cache/client/base_cache.dart';
 import '../../data/cache/client/preference_cache.dart';
 import '../../data/http/http_export.dart';
@@ -65,6 +66,7 @@ class ServiceLocator {
   void _registerUseCase() {
     registerFactory<WelcomeUseCase>(() => WelcomeUseCase(get<WelcomeRepository>()));
     registerFactory<AuthUseCase>(() => AuthUseCase(get<AuthRepository>()));
+    registerFactory<TradeUseCase>(() => TradeUseCase(get<TradeRepository>()));
   }
 
   void _registerTradeRepositories(ApiClient client, BaseCache cache) {

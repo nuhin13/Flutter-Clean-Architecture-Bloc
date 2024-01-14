@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_clean_architecture/res/app_context_extension.dart';
+import 'package:flutter_clean_architecture/core/core_export.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../../../routes/navigation_service.dart';
-import '../../../../../../routes/route_paths.dart';
+import '../../../../../res/res_export.dart';
+import '../../../../../services/services_export.dart';
 import '../bloc/splash_bloc.dart';
 
 class SplashScreen extends StatelessWidget {

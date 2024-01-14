@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_clean_architecture/res/app_context_extension.dart';
+import 'package:flutter_clean_architecture/core/core_export.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../../routes/navigation_service.dart';
-import '../../../../../routes/route_paths.dart';
+import '../../../../../res/res_export.dart';
+import '../../../../../services/services_export.dart';
 import '../bloc/login_bloc_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -54,7 +54,7 @@ class LoginScreen extends StatelessWidget {
               child: SvgPicture.asset(context.resources.drawable.splashImage)),
           const SizedBox(height: 16),
           Text(
-            '${context.resources.strings?.loginText}',
+            '${context.resources.strings?.loginUpperText}',
             style: const TextStyle(
               color: Color(0xFF445164),
               fontSize: 24,

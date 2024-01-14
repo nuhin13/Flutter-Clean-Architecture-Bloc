@@ -1,11 +1,7 @@
 
 import 'package:dartz/dartz.dart';
-import 'package:flutter_clean_architecture/core/data/http/client/base_http_repository.dart';
 
-import '../../../../core/data/cache/client/base_cache.dart';
-import '../../../../core/data/cache/preference/shared_preference_constants.dart';
-import '../../../../core/domain/error/failure.dart';
-import '../../../../core/domain/di/service_locator.dart';
+import '../../../../core/core_export.dart';
 import '../../domain/entity/instruction.dart';
 import '../../domain/repository/welcome_repository.dart';
 

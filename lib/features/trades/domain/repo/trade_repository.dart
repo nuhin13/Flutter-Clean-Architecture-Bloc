@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
-import '../model/trade_item.dart';
+import 'package:flutter_clean_architecture/core/core_export.dart';
 
+import '../entity/trade_item.dart';
 
 abstract class TradeRepository {
-  Future<Either<dynamic, TradeItemList>> getTradeList();
+  Future<Either<Failure, TradeItemList>> getTradeList();
 }

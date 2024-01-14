@@ -1,9 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../../core/data/http/client/api_client.dart';
-import '../../../../core/data/http/client/base_http_repository.dart';
-import '../../../../core/data/http/http_export.dart';
-import '../../../../core/domain/error/failure.dart';
+import '../../../../core/core_export.dart';
 import '../../domain/model/auth_facebook_req.dart';
 import '../../domain/model/auth_gmail_req.dart';
 import '../../domain/model/auth_login_req.dart';
@@ -43,19 +40,16 @@ class AuthHttpImpl extends BaseHttpRepository implements AuthRepository {
 
   @override
   Future<Either> facebookLogin(AuthFacebookReq req) {
-    // TODO: implement facebookLogin
     throw UnimplementedError();
   }
 
   @override
   Future<Either> gmailLogin(AuthGmailReq req) {
-    // TODO: implement gmailLogin
     throw UnimplementedError();
   }
 
   @override
   Future<Either> registration(AuthRegistrationReq req) {
-    // TODO: implement registration
     throw UnimplementedError();
   }
 

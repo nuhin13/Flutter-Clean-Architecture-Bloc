@@ -5,7 +5,7 @@ import 'package:flutter_clean_architecture/features/authentication/domain/model/
 import 'package:flutter_pretty_dio_logger/flutter_pretty_dio_logger.dart';
 import 'package:logger/logger.dart';
 
-import '../../../../routes/navigation_service.dart';
+import '../../../../services/navigation/navigation_service.dart';
 import '../../../domain/error/api_exceptions.dart';
 import '../../cache/client/base_cache.dart';
 import '../../cache/preference/shared_preference_constants.dart';
