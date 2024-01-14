@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
+import 'package:logger/logger.dart';
 
 import 'base_cache.dart';
-import 'preference/shared_preference.dart';
+import '../preference/shared_preference.dart';
 
 class PreferenceCache extends BaseCache {
   static const String _lastCachedAtKey = "cache_control:last_cached_at";
@@ -16,16 +16,15 @@ class PreferenceCache extends BaseCache {
     }
     var data = await SharedPreference.getValue("$key:data");
 
-    if (kDebugMode) {
-      print("From Cache for the key: ${key} => $data");
-    }
+    Logger().i("From Cache for the key: $key => $data");
     return data;
   }
 
   @override
   Future<void> put(String key, String value, Duration duration) async {
     SharedPreference.setValue("$key:data", value);
-    SharedPreference.setValue("$key:expires_at", DateTime.now().add(duration).millisecondsSinceEpoch.toString());
+    SharedPreference.setValue("$key:expires_at",
+        DateTime.now().add(duration).millisecondsSinceEpoch.toString());
     await _setLastCachedAt();
   }
 
@@ -70,7 +69,8 @@ class PreferenceCache extends BaseCache {
   }
 
   Future<void> _setLastCachedAt() async {
-    await SharedPreference.setValue(_lastCachedAtKey, DateTime.now().toString());
+    await SharedPreference.setValue(
+        _lastCachedAtKey, DateTime.now().toString());
   }
 
   @override

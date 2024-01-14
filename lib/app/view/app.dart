@@ -4,7 +4,7 @@ import 'package:flutter_clean_architecture/features/welcome/domain/usecase/welec
 import 'package:flutter_clean_architecture/res/app_context_extension.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import '../../core/domain/service_locator.dart';
+import '../../core/domain/di/service_locator.dart';
 import '../../features/authentication/domain/usecase/auth_use_case.dart';
 import '../../features/authentication/presentation/login/bloc/login_bloc_cubit.dart';
 import '../../features/authentication/presentation/registration/bloc/registration_bloc.dart';

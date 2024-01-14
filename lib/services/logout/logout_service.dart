@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
 
-import '../../core/data/cache/base_cache.dart';
-import '../../core/domain/service_locator.dart';
+import '../../core/data/cache/client/base_cache.dart';
+import '../../core/domain/di/service_locator.dart';
 import '../../routes/navigation_service.dart';
 import '../notification/service.dart';
 

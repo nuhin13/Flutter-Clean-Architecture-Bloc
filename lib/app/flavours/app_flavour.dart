@@ -4,10 +4,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../../core/domain/service_locator.dart';
-import '../../services/notification/service.dart';
-import '../../services/version/version.dart';
-import '../app_config.dart';
+import '../../core/domain/di/service_locator.dart';
+import '../../services/services.dart';
+import 'app_config.dart';
 
 Future<NotificationService> _bootNotificationServices() async {
   var notificationService = NotificationService();
@@ -22,11 +21,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   await dotenv.load();
   appConfig.loadData(dotenv.env);
-  // var notificationService = await _bootNotificationServices();
-  //await ServiceLocator(appConfig);
+  // var notificationService = await _bootNotificationServices(); // when notification is needed
 
   ServiceLocator().init(appConfig: appConfig);
-
   await getVersion();
 
   runApp(await builder());

@@ -1,17 +1,15 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/core/domain/extensions/string_util.dart';
-import 'package:flutter_clean_architecture/core/domain/service_locator.dart';
 import 'package:flutter_clean_architecture/features/authentication/domain/model/user_info.dart';
 import 'package:flutter_pretty_dio_logger/flutter_pretty_dio_logger.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:logger/logger.dart';
 
-import '../../../routes/navigation_service.dart';
-import '../../domain/error/api_exceptions.dart';
-import '../cache/base_cache.dart';
-import '../cache/preference/shared_preference_constants.dart';
-import '../dto/jwt.dart';
+import '../../../../routes/navigation_service.dart';
+import '../../../domain/error/api_exceptions.dart';
+import '../../cache/client/base_cache.dart';
+import '../../cache/preference/shared_preference_constants.dart';
+import '../../dto/jwt.dart';
 import 'api_client_config.dart';
 import 'resource.dart';
 
@@ -30,7 +28,7 @@ class ApiClient {
   JWT? _token;
   Future? _ongoingRefreshCall;
   bool isRefresh = false;
-  var _logger;
+  Logger _logger;
 
   ApiClient(this._config, this._cache, this._logger) {
     setToken();
@@ -51,8 +49,8 @@ class ApiClient {
     }
   }
 
-  JWT getToken() {
-    return _token!;
+  JWT? getToken() {
+    return _token;
   }
 
   get logger => _logger;
@@ -70,55 +68,12 @@ class ApiClient {
     //Dispatcher.fire(LoggedOutEvent());
   }
 
-  //
-  // Future<Options> _makeOptions(_TokenizeRequest tokenize) async {
-  //   var headers = {
-  //     'Accept': ContentType.json.mimeType,
-  //     'X-App-Version': (await PackageInfo.fromPlatform()).buildNumber,
-  //     'X-App-Platform': Platform.isIOS ? "iOS" : "android"
-  //   };
-  //
-  //   if (tokenize == _TokenizeRequest.withoutAnyToken) return Options(headers: headers);
-  //   headers = await _addAuthHeader(headers, tokenize);
-  //   return Options(headers: headers);
-  // }
-  //
-  // Future<Map<String, String>> _addAuthHeader(Map<String, String> headers, _TokenizeRequest tokenize) async {
-  //   var token = await _getToken(tokenize);
-  //   headers["authorization"] = "Bearer ${token.toString()}";
-  //   return headers;
-  // }
-  //
-  // Future<JWT> _getToken(_TokenizeRequest tokenize) async {
-  //   if (_token == null) throw ArgumentError.notNull("Token");
-  //   if (tokenize == _TokenizeRequest.withCurrentToken) return _token!;
-  //   if (_token!.isAlive()) return _token!;
-  //
-  //   await _refreshToken();
-  //   return _token!;
-  // }
-  //
-  // Future<void> _refreshToken() async {
-  //   try {
-  //     await _handleAuthorizationError(() async {
-  //       _ongoingRefreshCall ??= _post('/api/customer/refresh?token=true', _TokenizeRequest.withCurrentToken, {});
-  //       var response = await _ongoingRefreshCall;
-  //       _ongoingRefreshCall = null;
-  //       _token = JWT(response['token']);
-  //       //Dispatcher.fire(TokenUpdatedEvent(_token!));
-  //       return response;
-  //     }, retry: 0);
-  //   } on UnauthorizedException {
-  //     removeToken();
-  //     rethrow;
-  //   }
-  // }
-
   Future<Resource> get(String uri, {Map<String, dynamic>? queryParams}) async {
     return _get(uri, false, queryParams);
   }
 
-  Future<Resource> authorizedGet(String uri, {Map<String, dynamic>? queryParams}) async {
+  Future<Resource> authorizedGet(String uri,
+      {Map<String, dynamic>? queryParams}) async {
     return _handleAuthorizationError(() {
       return _get(uri, true, queryParams);
     });
@@ -128,7 +83,8 @@ class ApiClient {
     return _post(uri, false, data);
   }
 
-  Future<Resource> authorizedPost(String uri, Map<String, dynamic> data, {bool? isFormData = false}) async {
+  Future<Resource> authorizedPost(String uri, Map<String, dynamic> data,
+      {bool? isFormData = false}) async {
     return _handleAuthorizationError(() {
       return _post(uri, true, data, isFormData: isFormData);
     });
@@ -157,7 +113,8 @@ class ApiClient {
     });
   }
 
-  Future<Resource> _get(String uri, bool tokenize, Map<String, dynamic>? queryParams) async {
+  Future<Resource> _get(
+      String uri, bool tokenize, Map<String, dynamic>? queryParams) async {
     return _getDataOrHandleDioError(() async {
       Options options = await _makeOptions(tokenize);
       _dio.interceptors.add(PrettyDioLogger(
@@ -176,7 +133,8 @@ class ApiClient {
     });
   }
 
-  Future<Resource> _post(String uri, bool tokenize, Map<String, dynamic>? data, {bool? isFormData}) async {
+  Future<Resource> _post(String uri, bool tokenize, Map<String, dynamic>? data,
+      {bool? isFormData}) async {
     bool hasFile = data != null ? _processFiles(data) : false;
 
     logger.d("Data: $data");
@@ -188,8 +146,8 @@ class ApiClient {
         data: hasFile
             ? FormData.fromMap(data)
             : isFormData == true
-            ? FormData.fromMap(data!)
-            : data,
+                ? FormData.fromMap(data!)
+                : data,
         options: options,
       );
     });
@@ -217,7 +175,8 @@ class ApiClient {
     return hasFile;
   }
 
-  Future<Resource> _handleAuthorizationError(Function func, {int retry = 1}) async {
+  Future<Resource> _handleAuthorizationError(Function func,
+      {int retry = 1}) async {
     try {
       return await func();
     } on ApiException catch (e) {
@@ -229,14 +188,17 @@ class ApiClient {
     }
   }
 
-  Future<Resource> _getDataOrHandleDioError(Function func, {int retry = 1}) async {
+  Future<Resource> _getDataOrHandleDioError(Function func,
+      {int retry = 1}) async {
     try {
       final Response response = await func();
       _logIfDebug(response);
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
-        return Resource(response: response.data, messageCode: response.statusCode);
+        return Resource(
+            response: response.data, messageCode: response.statusCode);
       } else if (response.statusCode == 401) {
-        throw UnauthorizedException(response.data['message'] ?? "unauthorized exception");
+        throw UnauthorizedException(
+            response.data['message'] ?? "unauthorized exception");
       } else if (response.statusCode == 403) {
         throw UnauthorizedException("unauthorized exception");
       } else if (response.statusCode == 500) {
@@ -248,15 +210,15 @@ class ApiClient {
         return Resource(
             status: ResourceStatus.failed,
             messageCode: response.statusCode,
-            message: response.data != null ? response.data['message'] : 'failed');
+            message:
+                response.data != null ? response.data['message'] : 'failed');
       }
-    } on DioError catch (error) {
+    } on DioException catch (error) {
       logger.wtf(error, error.message, StackTrace.current);
-      if (error.type == DioErrorType.sendTimeout) {
+      if (error.type == DioExceptionType.sendTimeout) {
         throw Exception("Connection timeout exception");
       }
-      if (error.type == DioErrorType.connectionError) {
-        // check
+      if (error.type == DioExceptionType.connectionError) {
         throw const SocketException("no internet");
       }
       if (error.response == null) {
@@ -264,7 +226,7 @@ class ApiClient {
       }
       return Resource(
         status: ResourceStatus.failed,
-        message: error.message, //error.error ?? error.toString(),
+        message: error.message,
         response: error.response,
       );
     }
@@ -273,15 +235,9 @@ class ApiClient {
   void _logIfDebug(Response response) {
     if (_config.isNotDebug) return;
 
-    logger.d(
-      response.realUri.toString(),
-    );
-    logger.d(
-      response.data,
-    );
-    logger.d(
-      response.statusCode.toString(),
-    );
+    logger.d(response.realUri.toString());
+    logger.d(response.data);
+    logger.d(response.statusCode.toString());
   }
 
   String _getErrorMessage(Response response) {
@@ -302,8 +258,8 @@ class ApiClient {
     }
     return Options(
         headers: headers,
-        sendTimeout: const Duration(milliseconds: 60 * 1000), // 60 * 1000
-        receiveTimeout: const Duration(milliseconds: 30 * 1000), // 30000
+        sendTimeout: const Duration(milliseconds: 60 * 1000),
+        receiveTimeout: const Duration(milliseconds: 30 * 1000),
         followRedirects: false,
         validateStatus: (status) {
           return status! <= 500;
@@ -315,14 +271,17 @@ class ApiClient {
       "Accept": "application/json",
       "Platform": Platform.isIOS ? "ios" : "android",
       "Accept-language": Localizations.localeOf(
-          NavigationService.navigatorKey.currentContext!) == const Locale('ja')
-          ? "jp" : "en",
+                  NavigationService.navigatorKey.currentContext!) ==
+              const Locale('ja')
+          ? "jp"
+          : "en",
       "Version": version,
     };
     return header;
   }
 
-  Future<Map<String, dynamic>> _addAuthHeader(Map<String, dynamic> headers) async {
+  Future<Map<String, dynamic>> _addAuthHeader(
+      Map<String, dynamic> headers) async {
     JWT? token = await _getToken();
     headers["authorization"] = "Bearer ${token.getToken()}";
     return headers;
@@ -356,3 +315,46 @@ class ApiClient {
   }
 }
 
+//
+// Future<Options> _makeOptions(_TokenizeRequest tokenize) async {
+//   var headers = {
+//     'Accept': ContentType.json.mimeType,
+//     'X-App-Version': (await PackageInfo.fromPlatform()).buildNumber,
+//     'X-App-Platform': Platform.isIOS ? "iOS" : "android"
+//   };
+//
+//   if (tokenize == _TokenizeRequest.withoutAnyToken) return Options(headers: headers);
+//   headers = await _addAuthHeader(headers, tokenize);
+//   return Options(headers: headers);
+// }
+//
+// Future<Map<String, String>> _addAuthHeader(Map<String, String> headers, _TokenizeRequest tokenize) async {
+//   var token = await _getToken(tokenize);
+//   headers["authorization"] = "Bearer ${token.toString()}";
+//   return headers;
+// }
+//
+// Future<JWT> _getToken(_TokenizeRequest tokenize) async {
+//   if (_token == null) throw ArgumentError.notNull("Token");
+//   if (tokenize == _TokenizeRequest.withCurrentToken) return _token!;
+//   if (_token!.isAlive()) return _token!;
+//
+//   await _refreshToken();
+//   return _token!;
+// }
+//
+// Future<void> _refreshToken() async {
+//   try {
+//     await _handleAuthorizationError(() async {
+//       _ongoingRefreshCall ??= _post('/api/customer/refresh?token=true', _TokenizeRequest.withCurrentToken, {});
+//       var response = await _ongoingRefreshCall;
+//       _ongoingRefreshCall = null;
+//       _token = JWT(response['token']);
+//       //Dispatcher.fire(TokenUpdatedEvent(_token!));
+//       return response;
+//     }, retry: 0);
+//   } on UnauthorizedException {
+//     removeToken();
+//     rethrow;
+//   }
+// }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../../core/data/cache/base_cache.dart';
+import '../../core/data/cache/client/base_cache.dart';
 import '../../core/data/cache/preference/shared_preference_constants.dart';
-import '../../core/domain/service_locator.dart';
+import '../../core/domain/di/service_locator.dart';
 
 getVersion() async {
   final BaseCache cache = serviceLocator<BaseCache>();

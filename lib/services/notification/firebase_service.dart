@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../core/domain/service_locator.dart';
+import '../../core/domain/di/service_locator.dart';
 import 'local_service.dart';
 import 'notification_repository.dart';
 

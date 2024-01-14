@@ -1,5 +1,5 @@
 
-import '../number_util/number_util.dart';
+import '../extension_export.dart';
 
 extension _TwoDigit on int {
   String twoDigit() {
@@ -81,7 +81,8 @@ extension DateUtil on DateTime {
   static DateTime parseFromDMY(String date, {String separator = "/"}) {
     try {
       var dateSplitted = date.split(separator);
-      var mysqlString = "${dateSplitted[2]}-${dateSplitted[1]}-${dateSplitted[0]}";
+      var mysqlString =
+          "${dateSplitted[2]}-${dateSplitted[1]}-${dateSplitted[0]}";
       return DateTime.parse(mysqlString);
     } catch (_) {
       throw FormatException("Invalid DMY format: $date");

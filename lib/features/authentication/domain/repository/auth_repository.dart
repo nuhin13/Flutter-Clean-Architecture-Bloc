@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/domain/failure.dart';
+import '../../../../core/domain/error/failure.dart';
 import '../model/auth_facebook_req.dart';
 import '../model/auth_gmail_req.dart';
 import '../model/auth_login_req.dart';

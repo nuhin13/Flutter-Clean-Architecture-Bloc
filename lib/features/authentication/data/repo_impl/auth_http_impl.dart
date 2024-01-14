@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../../core/data/http/api_client.dart';
-import '../../../../core/data/http/api_urls.dart';
-import '../../../../core/data/http/base_http_repository.dart';
-import '../../../../core/domain/failure.dart';
+import '../../../../core/data/http/client/api_client.dart';
+import '../../../../core/data/http/client/base_http_repository.dart';
+import '../../../../core/data/http/http_export.dart';
+import '../../../../core/domain/error/failure.dart';
 import '../../domain/model/auth_facebook_req.dart';
 import '../../domain/model/auth_gmail_req.dart';
 import '../../domain/model/auth_login_req.dart';
@@ -14,13 +14,14 @@ import '../model/auth_login_response.dart';
 
 class AuthHttpImpl extends BaseHttpRepository implements AuthRepository {
   late final ApiClient _client;
+  late final AuthenticationApiUrls _urls;
 
-  AuthHttpImpl(this._client) : super(_client);
+  AuthHttpImpl(this._client, this._urls) : super(_client);
 
   @override
   Future<Either<Failure, UserInfo>> emailLogin(AuthLoginReq req) async {
     try {
-      final response = await _client.post(ApiUrl.login, req.toJson());
+      final response = await _client.post(_urls.emailLoginUrl, req.toJson());
       if (response.messageCode == 200) {
         AuthLoginResponse authResponse =
             AuthLoginResponse.fromJson(response.response);

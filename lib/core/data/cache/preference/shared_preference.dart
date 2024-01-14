@@ -1,14 +1,16 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:logger/logger.dart';
 
 class SharedPreference {
+  static var errorSharedPref = "Error From SharedPreference => ";
+
   static Future<String?> getValue(String key) async {
     const storage = FlutterSecureStorage();
     String? value = '';
     try {
       value = await storage.read(key: key);
     } catch (e) {
-      // Todo: Implement logger
-      // Logger.log(e.toString());
+      Logger().e(errorSharedPref + e.toString());
     }
     return value;
   }
@@ -21,8 +23,7 @@ class SharedPreference {
       storage.write(key: key, value: value);
       saved = true;
     } catch (e) {
-      // Todo: Implement logger
-      // Logger.log(e.toString());
+      Logger().e(errorSharedPref + e.toString());
     }
 
     return saved;
@@ -39,7 +40,6 @@ class SharedPreference {
 
     for (var key in all.keys) {
       if (!pattern.hasMatch(key)) continue;
-
       await storage.delete(key: key);
     }
   }
@@ -51,8 +51,7 @@ class SharedPreference {
       storage.write(key: key, value: value.toString());
       saved = true;
     } catch (e) {
-      // Todo: Implement logger
-      // Logger.log(e.toString());
+      Logger().e(errorSharedPref + e.toString());
     }
     return Future<bool>.value(saved);
   }
@@ -63,8 +62,7 @@ class SharedPreference {
       final String? value = await SharedPreference.getValue(key);
       hasValue = value.toString().toLowerCase() == "true" ? true : false;
     } catch (e) {
-      // Todo: Implement logger
-      // Logger.log(e.toString());
+      Logger().e(errorSharedPref + e.toString());
     }
     return Future<bool>.value(hasValue);
   }

@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 class DateTimeUtils {
-
-  static String formattedDateFromDateTime(DateTime dateTime, String desiredDateFormat) {
+  static String formattedDateFromDateTime(
+      DateTime dateTime, String desiredDateFormat) {
     DateFormat outputFormat = DateFormat(desiredDateFormat);
     String dateInString = outputFormat.format(dateTime);
     return dateInString;
@@ -12,7 +12,9 @@ class DateTimeUtils {
 
   static String formatOfferDate(String? date) {
     initializeDateFormatting('en', null);
-    if(date == null || date == "null"){return "";}
+    if (date == null || date == "null") {
+      return "";
+    }
     DateFormat inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ssZZZZ");
     DateTime dateTime = inputFormat.parse(date);
     DateFormat outputFormat = DateFormat.yMMMMd('en');
@@ -22,10 +24,14 @@ class DateTimeUtils {
 
   static String formatTimeLineDate(String? date) {
     initializeDateFormatting('en', null);
-    if(date == null || date == "null"){return "";}
+    if (date == null || date == "null") {
+      return "";
+    }
     DateFormat inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ssZZZZ");
     DateTime dateTime = inputFormat.parseUTC(date).toLocal();
-    DateFormat outputFormat = DateFormat('yyyy-MM-dd, hh:mm a',);
+    DateFormat outputFormat = DateFormat(
+      'yyyy-MM-dd, hh:mm a',
+    );
     String dateInString = outputFormat.format(dateTime);
     return dateInString;
   }
@@ -61,6 +67,7 @@ class DateTimeUtils {
     String dateInString = outputFormat.format(dateTime);
     return dateInString;
   }
+
   static String formatInDate(String date) {
     DateFormat inputFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     DateTime dateTime = inputFormat.parse(date);
@@ -69,7 +76,7 @@ class DateTimeUtils {
     return dateInString;
   }
 
-  static String getTimeInHrsAndMnts(String date){
+  static String getTimeInHrsAndMnts(String date) {
     DateFormat inputFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     DateTime dateTime = inputFormat.parse(date);
     var d12 = DateFormat('hh:mm a').format(dateTime);
@@ -125,22 +132,23 @@ class DateTimeUtils {
     DateTime dateTime = DateTime.parse(date);
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    return dateTime == today? true: false;
+    return dateTime == today ? true : false;
   }
 
-  static String getFormattedDateFromTimestamp(int timestamp, String desireFormat){
+  static String getFormattedDateFromTimestamp(
+      int timestamp, String desireFormat) {
     var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
     var d12 = DateFormat(desireFormat).format(date);
     return d12;
   }
 
-  static String getDateFromTimestamp(int timestamp){
+  static String getDateFromTimestamp(int timestamp) {
     var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
     var d12 = DateFormat('dd MMMM, yyyy').format(date);
     return d12;
   }
 
-  static String getTimeFromTimestamp12hFormat(int timestamp){
+  static String getTimeFromTimestamp12hFormat(int timestamp) {
     var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
     var d12 = DateFormat('hh:mm a').format(date);
     return d12;
@@ -154,20 +162,4 @@ class DateTimeUtils {
     DateTime dateTime = inputFormat.parse(date);
     return dateTime;
   }
-
-//convert date ymd to dmy
-/*static String ymdToDmyDateConvert(String date) {
-    var dateList = date.split(' ')[0].split('-');
-    return '${dateList[2]}-${dateList[1]}-${dateList[0]}';
-  }
-
-  static String ymdToDmyDateConvertBySlash(String? date) {
-    if(date!=null){
-      var dateList = date.split(' ')[0].split('-');
-      return '${dateList[2]}/${dateList[1]}/${dateList[0]}';
-    } else{
-      return 'N/A';
-    }
-  }*/
-
 }

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_clean_architecture/core/data/cache/base_cache.dart';
-import 'package:flutter_clean_architecture/core/data/cache/base_cache_repository.dart';
+import 'package:flutter_clean_architecture/core/data/cache/client/base_cache.dart';
+import 'package:flutter_clean_architecture/core/data/cache/client/base_cache_repository.dart';
 import 'package:flutter_clean_architecture/features/trades/data/http/trade_http_impl.dart';
 import 'package:flutter_clean_architecture/features/trades/domain/model/trade_item.dart';
 import 'package:flutter_clean_architecture/features/trades/domain/repo/trade_repository.dart';

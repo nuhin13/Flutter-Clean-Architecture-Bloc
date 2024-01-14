@@ -6,7 +6,6 @@ import '../../domain/model/trade_item.dart';
 import '../../domain/repo/trade_repository.dart';
 
 part 'trades_event.dart';
-
 part 'trades_state.dart';
 
 class TradesBloc extends Bloc<TradesEvent, TradesState> {

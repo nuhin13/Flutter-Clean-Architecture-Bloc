@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_clean_architecture/core/domain/failure.dart';
+import 'package:flutter_clean_architecture/core/domain/error/failure.dart';
 import 'package:flutter_clean_architecture/features/welcome/domain/entity/instruction.dart';
 
 abstract class WelcomeRepository {

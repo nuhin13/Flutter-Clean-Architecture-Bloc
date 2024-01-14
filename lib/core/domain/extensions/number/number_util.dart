@@ -1,6 +1,9 @@
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 class NumberFormatterUtil {
+  static var numberUtilError = "Error From NumberFormatterUtil => ";
+
   static String currencyFormatterEn(double? number) {
     String formattedValue = number.toString();
     var formatCurrency = NumberFormat(
@@ -10,6 +13,7 @@ class NumberFormatterUtil {
     try {
       formattedValue = formatCurrency.format(number);
     } catch (e) {
+      Logger().e(numberUtilError + e.toString());
     }
     return formattedValue;
   }
@@ -23,6 +27,7 @@ class NumberFormatterUtil {
     try {
       formattedValue = formatCurrency.format(number);
     } catch (e) {
+      Logger().e(numberUtilError + e.toString());
     }
     return formattedValue;
   }
@@ -49,6 +54,7 @@ class NumberFormatterUtil {
     try {
       formattedValue = formatCurrency.format(number);
     } catch (e) {
+      Logger().e(numberUtilError + e.toString());
     }
     return formattedValue;
   }
@@ -62,6 +68,7 @@ class NumberFormatterUtil {
     try {
       formattedValue = formatCurrency.format(number);
     } catch (e) {
+      Logger().e(numberUtilError + e.toString());
     }
     return formattedValue;
   }
@@ -108,7 +115,7 @@ class NumberFormatterUtil {
   }
 
   static String convertNumberIntoBangaliDouble(double engInput) {
-    String eng=  engInput.toStringAsFixed(2);
+    String eng = engInput.toStringAsFixed(2);
     String bengali = '';
     for (int i = 0; i < eng.toString().length; i++) {
       switch (eng.toString()[i]) {
