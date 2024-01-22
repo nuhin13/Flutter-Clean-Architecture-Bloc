@@ -1,6 +1,6 @@
-# flutter_clean_architecture
+# flutter_clean_architecture_with_bloc
 
-A new Flutter project with clean architecture. This project is In-Progress
+A new Flutter project with clean architecture with BLOC.
 
 ## Getting Started
 
