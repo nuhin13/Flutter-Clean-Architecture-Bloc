@@ -6,30 +6,24 @@ import 'package:flutter_clean_architecture/features/feature_screen_export.dart';
 import '../res_export.dart';
 
 class AppRouter {
-  static Route generateRoute(RouteSettings settings) {
-    Widget widget;
+  static final widgetMap = <String, Widget Function(RouteSettings)>{
+    RoutePaths.splash: (_) => const SplashScreen(),
+    RoutePaths.loginScreen: (settings) => const LoginScreen(),
+    RoutePaths.tradeScreen: (settings) => const TradesScreen(),
+  };
 
-    switch (settings.name) {
-      case RoutePaths.splash:
-        widget = const SplashScreen();
-        break;
-      case RoutePaths.loginScreen:
-        widget = const LoginScreen();
-        break;
-      case RoutePaths.tradeScreen:
-        widget = const TradesScreen();
-        break;
-      default:
-        return MaterialPageRoute(
-          builder: (context) => widget = Container(),
-        );
-    }
+  static Route generateRoute(RouteSettings settings) {
+    Widget widget = widgetMap[settings.name]?.call(settings) ??
+        Container(); // default to Container if route not found. Not found widget
 
     if (Platform.isIOS) {
       return MaterialPageRoute(
         builder: (context) {
-          return WillPopScope(
-            onWillPop: () => _onPop(context),
+          return PopScope(
+            canPop: false,
+            onPopInvoked: (didPop) {
+              if (_onPop(context) && didPop) Navigator.of(context).pop();
+            },
             child: widget,
           );
         },
@@ -60,10 +54,10 @@ class AppRouter {
     );
   }
 
-  static Future<bool> _onPop(BuildContext context) async {
+  static bool _onPop(BuildContext context) {
     if (Navigator.of(context).userGestureInProgress) {
-      return Future<bool>.value(false);
+      return false;
     }
-    return Future<bool>.value(true);
+    return true;
   }
 }
